@@ -20,24 +20,48 @@ const SignIn = () => {
   };
 
   return (
-    <div>
-      <h1>Sign In</h1>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSignIn}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Sign In</button>
-      </form>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800">Sign In</h2>
+        <form className="mt-6">
+          {/* Email Field */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="email">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
+          </div>
+          {/* Password Field */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700" htmlFor="password">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          {/* Sign In Button */}
+          <button
+            type="submit"
+            onClick={handleSignIn}
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+          >
+            Sign In
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
