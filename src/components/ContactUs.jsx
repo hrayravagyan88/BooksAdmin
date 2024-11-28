@@ -12,7 +12,6 @@ const ContactUs = () => {
       try {
         const querySnapshot = await getDocs(collection(db, collectionName));
         const docs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        console.log(docs)
         setData(docs);
       } catch (error) {
         console.error("Error fetching data: ", error);

@@ -5,7 +5,7 @@ import LeftSideBar from "./LeftSideBar";
 
 import Home from "./Home";
 import Profile from "./Profile";
-import Settings from "./Settings";
+import Settings from "./Pages/Settings/Settings";
 import ContactUs from "./ContactUs";
 
 const Dashboard = () => {
@@ -32,10 +32,8 @@ const Dashboard = () => {
         <LeftSideBar setCurrentView={setCurrentView} />
         {/* Main Content */}
         <div className="main-content">
-          <div className="ml-64 flex h-full w-full bg-gray-100">
-            <div className="p-6 justify-center ">
-
-              <h1 className="text-3xl font-semibold mb-6">{currentView}</h1>
+          <div className="ml-64 flex h-full w-full bg-gray-100 justify-center">
+            <div className="p-6 justify-center">
               {renderView()}
             </div>
           </div>

@@ -12,7 +12,6 @@ const Profile = () => {
       try {
         const querySnapshot = await getDocs(collection(db, collectionName));
         const docs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        console.log(docs,11)
         setData(docs);
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -50,7 +49,6 @@ const Profile = () => {
           <tbody>
             {data.map((item) => {
               const mediaEntries = Object.entries(item).filter(([key, value]) => key.startsWith('media'));
-                console.log(mediaEntries,22)
              return ( <tr key={item.id}>
                 <td className="border border-gray-300 px-4 py-2">{item.address}</td>
                 <td className="border border-gray-300 px-4 py-2">{item.city || "N/A"}</td>

@@ -3,7 +3,6 @@ import { auth } from "./firebase";
 
 export const createAdmin = async () => {
   try {
-    console.log(111 )
     const adminUser = await createUserWithEmailAndPassword(
       auth,
       "admin@example.com",
@@ -11,7 +10,6 @@ export const createAdmin = async () => {
     );
     console.log("Admin created:", adminUser);
   } catch (error) {
-    console.log(22 )
     console.error("Error creating admin:", error);
   }
 };

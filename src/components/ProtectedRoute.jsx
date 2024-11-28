@@ -4,7 +4,6 @@ import { auth } from "../firebase";
 
 const ProtectedRoute = ({ children }) => {
   const [user] = useAuthState(auth);
-    console.log(user)
   if (!user) {
     return <Navigate to="/" />;
   }
