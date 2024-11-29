@@ -15,7 +15,7 @@ const Sidebar = ({setCurrentView}) => {
             <ul className="mt-4 space-y-2">
                 <li onClick={() => setCurrentView("Home")} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Home</li>
                 <li onClick={() => setCurrentView("Profile")}  className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Profile</li>
-                <li onClick={() => setCurrentView("Settings")}  className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Settings</li>
+                <li onClick={() => setCurrentView("Settings")}  className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Books</li>
                 <li onClick={() => setCurrentView("ContactUs")}  className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Contact Us</li>
                 <li onClick={handleLogout}className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
                 Log Out

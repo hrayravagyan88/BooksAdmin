@@ -83,7 +83,7 @@ const AddBook = () => {
           <input
             type="text"
             name="title"
-            class="w-full rounded-lg border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-2 shadow-sm text-gray-900 placeholder-gray-400 py-2 px-4 transition duration-300"
+            className="w-full rounded-lg border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-2 shadow-sm text-gray-900 placeholder-gray-400 py-2 px-4 transition duration-300"
             value={bookDetails.title}
             onChange={handleInputChange}
             required
