@@ -5,8 +5,9 @@ import LeftSideBar from "./LeftSideBar";
 
 import Home from "./Home";
 import Profile from "./Profile";
-import Settings from "./Pages/Settings/Settings";
+import AddBook from "./Pages/Settings/AddBook";
 import ContactUs from "./ContactUs";
+import BooksList from "./Pages/Settings/BooksList";
 
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState("Home");
@@ -16,10 +17,12 @@ const Dashboard = () => {
         return <Home />;
       case "Profile":
         return <Profile />;
-      case "Settings":
-        return <Settings />;
+      case "AddBook":
+        return <AddBook />;
       case "ContactUs":
         return <ContactUs />;
+      case "AllBooks":
+          return <BooksList />  
       default:
         return <div>Select a view from the sidebar.</div>;
     }
