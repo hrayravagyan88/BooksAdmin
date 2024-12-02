@@ -6,6 +6,7 @@ import {
   getDocs,
   updateDoc,
   doc,
+  deleteDoc
 } from "firebase/firestore";
 
 const BookList = () => {
@@ -36,10 +37,18 @@ const BookList = () => {
       setLoading(false);
     }
   };
-  const deleteBook = async (book)=>{
-    console.log(book)
-  }
-  // Update Book
+  const deleteBook = async (id)=>{
+    if (window.confirm("Are you sure you want to delete this book?")) {
+      try {
+        const bookDoc = doc(db, "books", id);
+        await deleteDoc(bookDoc);
+        fetchBooks(); // Refresh the list after deletion
+      } catch (err) {
+        setError("Failed to delete book.");
+        console.error(err);
+      }
+    }  }
+
   const updateBook = async () => {
     if (!editBook.title || !editBook.description2 || !editBook.description1) {
       setError("All fields are required.");
@@ -221,7 +230,7 @@ const BookList = () => {
                     Edit
                   </button>
                   <button
-                    onClick={()=>deleteBook(book)}
+                    onClick={()=>deleteBook(book.id)}
                     className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
                   >
                     delete
