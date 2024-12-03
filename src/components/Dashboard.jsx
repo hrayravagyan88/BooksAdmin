@@ -4,7 +4,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import LeftSideBar from "./LeftSideBar";
 
 import Home from "./Home";
-import Profile from "./Profile";
+import Profile from "./Profile"
 import AddBook from "./Pages/Settings/AddBook";
 import ContactUs from "./ContactUs";
 import BooksList from "./Pages/Settings/BooksList";
@@ -36,7 +36,7 @@ const Dashboard = () => {
         {/* Main Content */}
         <div className="main-content">
           <div className="ml-64 flex h-full w-full bg-gray-100 justify-center">
-            <div className="p-6 justify-center">
+            <div className="flex p-6 justify-center">
               {renderView()}
             </div>
           </div>
