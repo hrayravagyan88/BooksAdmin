@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { db, storage } from "../../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-
+import { v4 as uuidv4 } from "uuid";
 import "./index.css";
 
 const AddBook = () => {
@@ -32,6 +32,7 @@ const AddBook = () => {
   };
 
   const handleSubmit = async (e) => {
+    const uniqueId = uuidv4();
     e.preventDefault();
     setLoading(true);
 
@@ -52,7 +53,8 @@ const AddBook = () => {
       // Add book details to Firestore
       await addDoc(collection(db, "books"), {
         ...bookDetails,
-        price: parseFloat(bookDetails.price),
+        price: bookDetails.price,
+        id: uniqueId,
         mainImage:url,
         images: imageUrls,
       });
@@ -66,7 +68,7 @@ const AddBook = () => {
         price: "",
       });
       setImages([]);
-
+      
     } catch (error) {
       console.error("Error adding book: ", error);
       alert("Failed to add book.");
