@@ -141,13 +141,13 @@ const Profile = () => {
                   ) : (
                     <td className="border border-gray-300 px-4 py-2">
                       <button
-                        className="bg-yellow-500 text-white px-4 py-1 rounded mr-2"
+                        className="h-[32px] bg-yellow-500 text-white px-4 py-1 rounded mr-2"
                         onClick={() => handleEdit(item.doc_id)}
                       >
                         Edit
                       </button>
                       <button
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        className="h-[32px] bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                         onClick={() => handleDelete(item.id)}
                       >
                         Delete

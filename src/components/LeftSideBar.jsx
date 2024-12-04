@@ -10,7 +10,7 @@ const Sidebar = ({ setCurrentView }) => {
         alert("Logged out!");
     };
     return (
-        <div className="fixed top-0 left-0 h-full w-64 bg-gray-800 text-white">
+        <div className="top-0 left-0 h-[100vh] w-64 bg-gray-800 text-white">
             <h2 className="text-2xl font-bold p-4 border-b border-gray-600">Dashboard</h2>
             <ul className="mt-4 space-y-2">
                 <li onClick={() => setCurrentView("Home")} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Home</li>

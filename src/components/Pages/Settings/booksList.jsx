@@ -78,6 +78,7 @@ const BookList = () => {
       }
 
       const bookDoc = doc(db, "books", editBook.id);
+      console.log(bookDoc,editBook )
       await updateDoc(bookDoc, {
         title: editBook.title,
         description2: editBook.description2,
@@ -101,7 +102,7 @@ const BookList = () => {
   }, []);
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="container mx-auto p-4 pl-0">
       <h1 className="text-3xl font-bold mb-6">Edit Books</h1>
 
       {error && <p className="text-red-500">{error}</p>}
