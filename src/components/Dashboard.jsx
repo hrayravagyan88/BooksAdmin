@@ -4,7 +4,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import LeftSideBar from "./LeftSideBar";
 
 import Home from "./Home";
-import Profile from "./Profile"
+import Orders from "./Orders"
 import AddBook from "./Pages/Settings/AddBook";
 import ContactUs from "./ContactUs";
 import BooksList from "./Pages/Settings/BooksList";
@@ -15,8 +15,8 @@ const Dashboard = () => {
     switch (currentView) {
       case "Home":
         return <Home />;
-      case "Profile":
-        return <Profile />;
+      case "Orders":
+        return <Orders />;
       case "AddBook":
         return <AddBook />;
       case "ContactUs":
