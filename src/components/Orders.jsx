@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 
 const Profile = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [book, setBook] = useState(null);
-
+  const [editingOrder, setEditingOrder] = useState(null);
 
   useEffect(() => {
     const collectionName = 'Order'
@@ -23,11 +22,9 @@ const Profile = () => {
           const orderData = orderDoc.data();
           const bookId = orderData.doc_id;
           if (bookId) {
-            console.log(bookId,232)
-            // Fetch the book details using the book_id
+
             const bookDocRef = doc(db, "books", bookId);
             const bookDocSnap = await getDoc(bookDocRef);
-            console.log(bookDocRef,bookDocSnap)
             if (bookDocSnap.exists()) {
               const bookData = bookDocSnap.data();
               updatedOrders.push({ ...orderData, bookTitle: bookData.title });
@@ -40,9 +37,7 @@ const Profile = () => {
         }
         
         setData(updatedOrders);
-       // console.log(111,updatedOrders)
       } catch (error) {
-        console.error("Error fetching data: ", error);
       } finally {
         setLoading(false);
       }
@@ -50,13 +45,24 @@ const Profile = () => {
 
     fetchData();
   }, []);
+  const handleSave = (orderId) => {
+    // Save logic here - Update Firebase with new values
+    // Then reset editing state
+    setEditingOrder(null);
+  };
+  const handleEdit = (orderId) => {
+    setEditingOrder(orderId); // Set order to be edited
+  };
 
+  const handleCancel = () => {
+    setEditingOrder(null); // Reset editing
+  };
   const handleDelete = async (userId) => {
+    console.log(userId)
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this user?"
     );
     if (confirmDelete) {
-      console.log(userId)
      // await deleteDoc(doc(db, "users", userId)); // Replace "users" with your collection name
       //fetchUsers(); // Refresh the users list
     }
@@ -67,7 +73,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 pl-0">
       <h1 className="text-2xl font-bold text-center mb-8">Orders</h1>
       <div className="overflow-auto">
       {data.length === 0 ? (
@@ -76,10 +82,11 @@ const Profile = () => {
         <table className=" overflow-auto table-auto w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
             <tr className="text-xs">
+              
               <th className="border border-gray-300 px-4 py-2">BookName</th>
               <th className="border border-gray-300 px-4 py-2">Address</th>
               <th className="border border-gray-300 px-4 py-2">City</th>
-              <th className="border border-gray-300 px-4 py-2">DeLiver</th>
+              <th className="border border-gray-300 px-4 py-2">DeLivery</th>
               <th className="border border-gray-300 px-4 py-2">Mail</th>
               <th className="border border-gray-300 px-4 py-2">FullName</th>
               <th className="border border-gray-300 px-4 py-2">Note</th>
@@ -112,15 +119,38 @@ const Profile = () => {
 
                   ))} </div>
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                {editingOrder === item.doc_id ? (
+                  <>
+                    <button
+                      className="bg-blue-500 text-white px-4 py-1 rounded"
+                      onClick={() => handleSave(item.id)}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-4 py-1 rounded ml-2"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className="bg-yellow-500 text-white px-4 py-1 rounded mr-2"
+                      onClick={() => handleEdit(item.doc_id)}
+                    >
+                      Edit
+                    </button>
                   <button
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     onClick={() => handleDelete(item.id)}
                   >
                     Delete
                   </button>
-                </td>
-
+                  </>
+                )}
+               
               </tr>)
             })}
           </tbody>

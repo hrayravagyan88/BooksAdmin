@@ -36,7 +36,7 @@ const Dashboard = () => {
         {/* Main Content */}
         <div className="main-content">
           <div className="ml-64 flex h-full w-full bg-gray-100 justify-center">
-            <div className="flex p-6 justify-center">
+            <div className="flex p-6 pl-0 justify-center">
               {renderView()}
             </div>
           </div>
