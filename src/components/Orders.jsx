@@ -1,81 +1,107 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-
+import { collection, doc, getDoc, getDocs ,deleteDoc} from "firebase/firestore";
+import AddOrderModal from "./AddOrderModal";
 
 const Profile = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
 
   useEffect(() => {
-    const collectionName = 'Order'
-    const fetchData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, collectionName));
-        const updatedOrders = [];
-
-        // Use a for loop instead of map
-
-        for (const orderDoc of querySnapshot.docs) {
-          const orderData = orderDoc.data();
-          const bookId = orderData.doc_id;
-          if (bookId) {
-
-            const bookDocRef = doc(db, "books", bookId);
-            const bookDocSnap = await getDoc(bookDocRef);
-            if (bookDocSnap.exists()) {
-              const bookData = bookDocSnap.data();
-              updatedOrders.push({ ...orderData, bookTitle: bookData.title });
-            } else {
-              updatedOrders.push({ ...orderData, bookTitle: "Unknown Book" });
-            }
-          } else {
-            updatedOrders.push({ ...orderData, bookTitle: "No Book Assigned" });
-          }
-        }
-
-        setData(updatedOrders);
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    const collectionName = 'Order'
+    try {
+      const querySnapshot = await getDocs(collection(db, collectionName));
+      const updatedOrders = [];
+      let MyNewSnapshot = querySnapshot.docs.map((doc) => ({
+        collectionId: doc.id, // Include the Firestore document ID
+        ...doc.data(),
+      }));
+  
+      for (const orderDoc of MyNewSnapshot) {
+        const orderData = orderDoc
+        const bookId = orderData.doc_id;
+        if (bookId) {
+
+          const bookDocRef = doc(db, "books", bookId);
+          const bookDocSnap = await getDoc(bookDocRef);
+          if (bookDocSnap.exists()) {
+            const bookData = bookDocSnap.data();
+            updatedOrders.push({ ...orderData, bookTitle: bookData.title });
+          } else {
+            updatedOrders.push({ ...orderData, bookTitle: "Unknown Book" });
+          }
+        } else {
+          updatedOrders.push({ ...orderData, bookTitle: "No Book Assigned" });
+        }
+      }
+
+      setData(updatedOrders);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleSave = (orderId) => {
     // Save logic here - Update Firebase with new values
     // Then reset editing state
     setEditingOrder(null);
   };
   const handleEdit = (orderId) => {
+    console.log(orderId)
     setEditingOrder(orderId); // Set order to be edited
   };
 
   const handleCancel = () => {
     setEditingOrder(null); // Reset editing
   };
-  const handleDelete = async (userId) => {
-    console.log(userId)
-    const confirmDelete = window.confirm(
+  const handleDelete = async (orderId) => {
+    console.log(orderId)
+   const confirmDelete = window.confirm(
       "Are you sure you want to delete this user?"
     );
     if (confirmDelete) {
-      // await deleteDoc(doc(db, "users", userId)); // Replace "users" with your collection name
-      //fetchUsers(); // Refresh the users list
+       await deleteDoc(doc(db, "Order", orderId)); 
+       fetchData(); 
     }
+       
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
+  const handleAddOrder = () => {
+    setShowAddModal(true);
+  };
 
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+  };
+  const handleNewOrder = ()=>{
+    fetchData();
+  }
   return (
-    <div className="container mx-auto p-4 pl-0">
+    <div className="pl-10 container mx-auto p-4 pl-0">
       <h1 className="text-2xl font-bold text-center mb-8">Orders</h1>
       <div className="overflow-auto">
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+        onClick={handleAddOrder}
+      >
+        Add Order
+      </button>
+
+      {/* Add Order Modal */}
+      {showAddModal && (
+        <AddOrderModal handleNewOrder={handleNewOrder}  closeModal={handleCloseModal} />
+      )}
         {data.length === 0 ? (
           <div>No data available</div>
         ) : (
@@ -93,9 +119,6 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
                 <th className="border border-gray-300 px-4 py-2">Images</th>
                 <th  className="border border-gray-300 px-4 py-2">Action</th>
-               <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
-                  +Add
-                </button>
               </tr>
             </thead>
             <tbody>
@@ -148,7 +171,7 @@ const Profile = () => {
                       </button>
                       <button
                         className="h-[32px] bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(item.collectionId)}
                       >
                         Delete
                       </button>
@@ -165,20 +188,9 @@ const Profile = () => {
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
             onClick={() => setSelectedImage(null)} // Close modal on click
           >
-            <div className="relative">
-              <img
-                src={selectedImage}
-                alt="Full Size"
-                className="max-w-full max-h-screen rounded shadow-lg"
-              />
-              <button
-                className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full"
-                onClick={() => setSelectedImage(null)}
-              >
-                ✕
-              </button>
-            </div>
+
           </div>
+          
         )}
       </div>
     </div>
