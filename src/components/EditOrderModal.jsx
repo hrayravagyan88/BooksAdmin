@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase"; // Your Firebase config file
 import { v4 as uuidv4 } from 'uuid';
+import { doc, getDoc } from "firebase/firestore";
 
-const AddOrderModal = ({ closeModal,handleNewOrder}) => {
+
+const EditOrderModal = ({ orderId,clodeEditModal,handleNewOrder}) => {
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
@@ -14,7 +16,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     granny_name: "",
     mail: "",
     note:"",
-    image:[]
+    phone:""
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]); 
   const [books, setBooks] = useState([]); // Books dropdown
@@ -23,8 +25,28 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
 
   // Fetch books from Firestore
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchData = async () => {
       try {
+        const orderDoc = doc(db, "Order", orderId);
+        const docSnap = await getDoc(orderDoc)
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const imageUrls = Object.keys(data)
+            .filter((key) => key.startsWith("media-")) // Filter keys starting with 'media-'
+            .map((key) => data[key]);
+            setImageFiles(imageUrls)
+            setOrderData({
+                address: data.address || "",
+                city: data.city || "",
+                delivery: data.delivery || false,
+                doc_id: docSnap.id, // The document ID from Firestore
+                fullName: data.fullName || "",
+                granny_name: data.granny_name || "",
+                mail: data.mail || "",
+                note: data.note || "",
+                phone:data.phone || "",// Assuming `image` is an array of URLs or image data
+              });         
+        } 
         const bookRef = collection(db, "books");
         const bookSnapshot = await getDocs(bookRef);
         const bookList = bookSnapshot.docs.map((doc) => ({
@@ -37,7 +59,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
       }
     };
 
-    fetchBooks();
+    fetchData();
   }, []);
 
   const handleInputChange = (e) => {
@@ -75,11 +97,11 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
       }, {});
 
       const order = { ...orderData,Images:result};
-      const orderRef = collection(db, "Order");
-      await addDoc(orderRef, order);
+      const docRef = doc(db, 'Order', orderId);
 
+        await updateDoc(docRef, order);
       alert("Order added successfully!");
-      closeModal();
+      clodeEditModal();
       handleNewOrder();
     } catch (error) {
       console.error("Error adding order:", error);
@@ -236,7 +258,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
             <button
               type="button"
               className="bg-gray-500 text-white px-4 py-1 rounded mr-2"
-              onClick={closeModal}
+              onClick={clodeEditModal}
             >
               Cancel
             </button>
@@ -245,7 +267,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
               className="bg-blue-500 text-white px-4 py-1 rounded"
               disabled={loading}
             >
-              {loading ? "Adding..." : "Add Order"}
+              {loading ? "Editing..." : "Edit  Order"}
             </button>
           </div>
         </form>
@@ -254,4 +276,4 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
   );
 };
 
-export default AddOrderModal;
+export default EditOrderModal;

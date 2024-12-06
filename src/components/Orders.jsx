@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, doc, getDoc, getDocs ,deleteDoc} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
 import AddOrderModal from "./AddOrderModal";
+import EditOrderModal from "./EditOrderModal"
 
 const Profile = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setshowEditModal] = useState(false);
+  const [selectedOrder,setSelectedOrder] = useState('')
+
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
@@ -24,7 +28,7 @@ const Profile = () => {
         collectionId: doc.id, // Include the Firestore document ID
         ...doc.data(),
       }));
-  
+
       for (const orderDoc of MyNewSnapshot) {
         const orderData = orderDoc
         const bookId = orderData.doc_id;
@@ -55,23 +59,22 @@ const Profile = () => {
     setEditingOrder(null);
   };
   const handleEdit = (orderId) => {
-    console.log(orderId)
-    setEditingOrder(orderId); // Set order to be edited
+    setSelectedOrder(orderId)
+    setshowEditModal(true); // Set order to be edited
   };
 
   const handleCancel = () => {
     setEditingOrder(null); // Reset editing
   };
   const handleDelete = async (orderId) => {
-    console.log(orderId)
-   const confirmDelete = window.confirm(
+    const confirmDelete = window.confirm(
       "Are you sure you want to delete this user?"
     );
     if (confirmDelete) {
-       await deleteDoc(doc(db, "Order", orderId)); 
-       fetchData(); 
+      await deleteDoc(doc(db, "Order", orderId));
+      fetchData();
     }
-       
+
   };
 
   if (loading) {
@@ -84,24 +87,32 @@ const Profile = () => {
   const handleCloseModal = () => {
     setShowAddModal(false);
   };
-  const handleNewOrder = ()=>{
+  const handleCloseEditModal = () => {
+    setshowEditModal(false)
+  };
+  const handleNewOrder = () => {
     fetchData();
   }
   return (
     <div className="pl-10 container mx-auto p-4 pl-0">
       <h1 className="text-2xl font-bold text-center mb-8">Orders</h1>
       <div className="overflow-auto">
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={handleAddOrder}
-      >
-        Add Order
-      </button>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          onClick={handleAddOrder}
+        >
+          Add Order
+        </button>
 
-      {/* Add Order Modal */}
-      {showAddModal && (
-        <AddOrderModal handleNewOrder={handleNewOrder}  closeModal={handleCloseModal} />
-      )}
+        {/* Add Order Modal */}
+        {showEditModal && (
+          <EditOrderModal orderId= {selectedOrder} handleNewOrder={handleNewOrder} clodeEditModal={handleCloseEditModal} />
+        )}
+
+        {showAddModal && (
+          <AddOrderModal handleNewOrder={handleNewOrder} closeModal={handleCloseModal} />
+        )}
+
         {data.length === 0 ? (
           <div>No data available</div>
         ) : (
@@ -118,36 +129,36 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">Note</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
                 <th className="border border-gray-300 px-4 py-2">Images</th>
-                <th  className="border border-gray-300 px-4 py-2">Action</th>
+                <th className="border border-gray-300 px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
               {data.map((item) => {
                 const mediaEntries = Object.entries(item).filter(([key, value]) => key.startsWith('media'));
                 return (<tr className="text-xs" key={item.id}>
-                  <td className="border border-gray-300 px-4 py-2">{item.bookTitle}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.address}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.city || "N/A"}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.delivery ? "Yes" : "NO"}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.mail || "N/A"}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.fullName || "N/A"}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.note || "N/A"}</td>
-                  <td className="border border-gray-300 px-4 py-2">{item.phone || "N/A"}</td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="border border-gray-300 ">{item.bookTitle}</td>
+                  <td className="border border-gray-300 ">{item.address}</td>
+                  <td className="border border-gray-300 ">{item.city || "N/A"}</td>
+                  <td className="border border-gray-300 ">{item.delivery ? "Yes" : "NO"}</td>
+                  <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
+                  <td className="border border-gray-300 ">{item.fullName || "N/A"}</td>
+                  <td className="border border-gray-300 ">{item.note || "N/A"}</td>
+                  <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
+                  <td className="border min-w-3 border-gray-300">
                     <div className="grid grid-cols-2 gap-2">   {mediaEntries.map(([key, value]) => (
 
                       <img
                         key={key}
                         src={value}
                         alt={`UserImage ${key + 1}`}
-                        className="cursor-pointer w-16 h-16 object-cover rounded"
+                        className="cursor-pointer w-16 h-16 object-cover rounded "
                         onClick={() => setSelectedImage(value)}
                       />
 
                     ))} </div>
                   </td>
                   {editingOrder === item.doc_id ? (
-                    <td  className="border border-gray-300 px-4 py-2">
+                    <td className="border border-gray-300 px-4 py-2">
                       <button
                         className="bg-blue-500 text-white px-4 py-1 rounded"
                         onClick={() => handleSave(item.id)}
@@ -165,7 +176,7 @@ const Profile = () => {
                     <td className="border border-gray-300 px-4 py-2">
                       <button
                         className="h-[32px] bg-yellow-500 text-white px-4 py-1 rounded mr-2"
-                        onClick={() => handleEdit(item.doc_id)}
+                        onClick={() => handleEdit(item.collectionId)}
                       >
                         Edit
                       </button>
@@ -190,7 +201,7 @@ const Profile = () => {
           >
 
           </div>
-          
+
         )}
       </div>
     </div>
