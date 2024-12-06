@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { doc, getDoc } from "firebase/firestore";
 
 
-const EditOrderModal = ({ orderId,clodeEditModal,handleNewOrder}) => {
+const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
@@ -39,7 +39,7 @@ const EditOrderModal = ({ orderId,clodeEditModal,handleNewOrder}) => {
                 address: data.address || "",
                 city: data.city || "",
                 delivery: data.delivery || false,
-                doc_id: docSnap.id, // The document ID from Firestore
+                doc_id: book, // The document ID from Firestore
                 fullName: data.fullName || "",
                 granny_name: data.granny_name || "",
                 mail: data.mail || "",

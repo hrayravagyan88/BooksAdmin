@@ -10,7 +10,7 @@ const Profile = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setshowEditModal] = useState(false);
   const [selectedOrder,setSelectedOrder] = useState('')
-
+  const [selectBook,setSelectBook] = useState('')
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
@@ -58,8 +58,9 @@ const Profile = () => {
     // Then reset editing state
     setEditingOrder(null);
   };
-  const handleEdit = (orderId) => {
+  const handleEdit = (orderId,books) => {
     setSelectedOrder(orderId)
+    setSelectBook(books)
     setshowEditModal(true); // Set order to be edited
   };
 
@@ -106,7 +107,7 @@ const Profile = () => {
 
         {/* Add Order Modal */}
         {showEditModal && (
-          <EditOrderModal orderId= {selectedOrder} handleNewOrder={handleNewOrder} clodeEditModal={handleCloseEditModal} />
+          <EditOrderModal orderId= {selectedOrder} book = {selectBook} handleNewOrder={handleNewOrder} clodeEditModal={handleCloseEditModal} />
         )}
 
         {showAddModal && (
@@ -176,7 +177,7 @@ const Profile = () => {
                     <td className="border border-gray-300 px-4 py-2">
                       <button
                         className="h-[32px] bg-yellow-500 text-white px-4 py-1 rounded mr-2"
-                        onClick={() => handleEdit(item.collectionId)}
+                        onClick={() => handleEdit(item.collectionId,item.doc_id)}
                       >
                         Edit
                       </button>
