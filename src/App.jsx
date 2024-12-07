@@ -4,7 +4,7 @@ import Dashboard from "../src/components/Dashboard";
 import SuperAdmin from "../src/components/SuperAdmin";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { auth } from "./firebase";
+import { auth } from "../firebase";
 
 const App = () => {
   const [user, setUser] = useState(null);

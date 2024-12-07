@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import { collection, doc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
 import AddOrderModal from "./AddOrderModal";
 import EditOrderModal from "./EditOrderModal"

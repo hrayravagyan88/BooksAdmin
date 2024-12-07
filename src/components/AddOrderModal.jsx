@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "../firebase"; // Your Firebase config file
+import { db, storage } from "../../firebase"; // Your Firebase config file
 import { v4 as uuidv4 } from 'uuid';
 
 const AddOrderModal = ({ closeModal,handleNewOrder}) => {
