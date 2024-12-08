@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-
+import {collection, getDocs, updateDoc, doc } from "firebase/firestore";
 
 
 // Your Firebase config (get this from your Firebase console)
@@ -24,4 +24,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 export const storage = getStorage(app);
 
+
 export { auth, db };
+
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db ,storage} from "../../../firebase";
+import { db, storage } from "../../../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   collection,
@@ -37,7 +37,7 @@ const BookList = () => {
       setLoading(false);
     }
   };
-  const deleteBook = async (id)=>{
+  const deleteBook = async (id) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
       try {
         const bookDoc = doc(db, "books", id);
@@ -47,7 +47,8 @@ const BookList = () => {
         setError("Failed to delete book.");
         console.error(err);
       }
-    }  }
+    }
+  }
 
   const updateBook = async () => {
     if (!editBook.title || !editBook.description2 || !editBook.description1) {
@@ -78,9 +79,12 @@ const BookList = () => {
       }
 
       const bookDoc = doc(db, "books", editBook.id);
-      console.log(bookDoc,editBook )
+
       await updateDoc(bookDoc, {
         title: editBook.title,
+        isActive: editBook.isActive,
+        isVisibleHome: editBook.isVisibleHome,
+        order: editBook.order,
         description2: editBook.description2,
         description1: editBook.description1,
         mainImage: updatedMainImage,
@@ -115,7 +119,48 @@ const BookList = () => {
             <div key={book.id} className="bg-white shadow rounded-lg p-4">
               {editBook && editBook.id === book.id ? (
                 // Edit Form
+
+
                 <div>
+                  <div>
+                    <label>
+                      Is Active:
+                      <input
+                        type="checkbox"
+                        checked={editBook.isActive}
+                        onChange={(e) =>
+                          setEditBook({ ...editBook, isActive: e.target.checked })
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label>
+                      Is Visible on Home:
+                      <input
+                        type="checkbox"
+                        checked={editBook.isVisibleHome}
+
+                        onChange={(e) =>
+                          setEditBook({ ...editBook, isVisibleHome: e.target.checked })
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label>
+                      Order:
+                      <input
+                        type="number"
+                        value={editBook.order}
+                        onChange={(e) =>
+                          setEditBook({ ...editBook, order: e.target.value })
+                        }
+                      />
+                    </label>
+                  </div>
                   <input
                     type="text"
                     placeholder="Title"
@@ -225,19 +270,19 @@ const BookList = () => {
                       ))}
                   </div>
                   <div className="flex flex-row justify-between">
-                  <button
-                    onClick={() => setEditBook(book)}
-                    className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={()=>deleteBook(book.id)}
-                    className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
-                  >
-                    delete
-                  </button>
-                </div>
+                    <button
+                      onClick={() => setEditBook(book)}
+                      className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteBook(book.id)}
+                      className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      delete
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

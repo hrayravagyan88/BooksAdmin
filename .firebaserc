@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "little-hero-admin"
+  },
+  "targets": {
+    "little-hero-admin": {
+      "hosting": {
+        "little-hero-admin": [
+          "books-admin-5f879"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
