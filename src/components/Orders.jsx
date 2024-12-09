@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
-import { collection, doc, getDoc, getDocs, deleteDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, deleteDoc,query,orderBy } from "firebase/firestore";
 import AddOrderModal from "./AddOrderModal";
 import EditOrderModal from "./EditOrderModal"
 
@@ -22,7 +22,9 @@ const Profile = () => {
   const fetchData = async () => {
     const collectionName = 'Order'
     try {
-      const querySnapshot = await getDocs(collection(db, collectionName));
+      const ordersRef = collection(db, "Order");
+      const ordersQuery = query(ordersRef, orderBy("createdDate", "asc"));
+      const querySnapshot = await getDocs(ordersQuery);
       const updatedOrders = [];
       let MyNewSnapshot = querySnapshot.docs.map((doc) => ({
         collectionId: doc.id, // Include the Firestore document ID
@@ -121,33 +123,33 @@ const Profile = () => {
             <thead className="bg-gray-100">
               <tr className="text-xs">
 
-                <th className="border border-gray-300 px-4 py-2">BookName</th>
-                <th className="border border-gray-300 px-4 py-2">Address</th>
-                <th className="border border-gray-300 px-4 py-2">City</th>
-                <th className="border border-gray-300 px-4 py-2">DeLivery</th>
+                <th  className="border border-gray-300 px-4 py-2">BookName</th>
+                <th  className="border border-gray-300 px-4 py-2">Address</th>
+                <th  className="border border-gray-300 px-4 py-2">City</th>
+                <th  className="border border-gray-300 px-4 py-2">DeLivery</th>
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
-                <th className="border border-gray-300 px-4 py-2">FullName</th>
+                <th  className="border border-gray-300 px-4 py-2">FullName</th>
                 <th className="border border-gray-300 px-4 py-2">Note</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
-                <th className="border border-gray-300 px-4 py-2">Images</th>
-                <th className="border border-gray-300 px-4 py-2">Action</th>
+                <th  className="border border-gray-300 px-4 py-2">Images</th>
+                <th  className="border border-gray-300 px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => {
-                const mediaEntries = Object.entries(item).filter(([key, value]) => key.startsWith('media'));
-                return (<tr className="text-xs" key={item.id}>
-                  <td className="border border-gray-300 ">{item.bookTitle}</td>
-                  <td className="border border-gray-300 ">{item.address}</td>
+              {data.map((item,index) => {
+                //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
+                const Images  = Object.entries(item.Images)
+                return (<tr key= {`${item.id}-${index}`} className="text-xs" >
+                  <td  className="border border-gray-300 ">{item.bookTitle}</td>
+                  <td  className="border border-gray-300 ">{item.address}</td>
                   <td className="border border-gray-300 ">{item.city || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.delivery ? "Yes" : "NO"}</td>
                   <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
-                  <td className="border border-gray-300 ">{item.fullName || "N/A"}</td>
+                  <td  className="border border-gray-300 ">{item.fullName || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.note || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
-                  <td className="border min-w-3 border-gray-300">
-                    <div className="grid grid-cols-2 gap-2">   {mediaEntries.map(([key, value]) => (
-
+                  <td  className="border min-w-3 border-gray-300">
+                    <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
                       <img
                         key={key}
                         src={value}

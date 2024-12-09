@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc,Timestamp  } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../../firebase"; // Your Firebase config file
 import { v4 as uuidv4 } from 'uuid';
@@ -14,7 +14,6 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     granny_name: "",
     mail: "",
     note:"",
-    image:[]
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]); 
   const [books, setBooks] = useState([]); // Books dropdown
@@ -74,7 +73,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
         return acc;
       }, {});
 
-      const order = { ...orderData,Images:result};
+      const order = { ...orderData,Images:result,createdDate: Timestamp.now(),};
       const orderRef = collection(db, "Order");
       await addDoc(orderRef, order);
 
@@ -157,7 +156,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Phone</label>
             <input
-              type="number"
+              type="input"
               name="phone"
               value={orderData.phone}
               onChange={handleInputChange}

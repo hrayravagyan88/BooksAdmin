@@ -31,10 +31,12 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
         const docSnap = await getDoc(orderDoc)
         if (docSnap.exists()) {
             const data = docSnap.data();
-            const imageUrls = Object.keys(data)
-            .filter((key) => key.startsWith("media-")) // Filter keys starting with 'media-'
-            .map((key) => data[key]);
+            const imageUrls = Object.values(data.Images)
+            //.filter((key) => key.startsWith("media-")) // Filter keys starting with 'media-'
+            //.map((key) => data[key]);
+            
             setImageFiles(imageUrls)
+            
             setOrderData({
                 address: data.address || "",
                 city: data.city || "",
@@ -44,7 +46,8 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
                 granny_name: data.granny_name || "",
                 mail: data.mail || "",
                 note: data.note || "",
-                phone:data.phone || "",// Assuming `image` is an array of URLs or image data
+                phone:data.phone || "",
+
               });         
         } 
         const bookRef = collection(db, "books");
@@ -238,6 +241,12 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="flex gap-4">
+          {imageFiles.map(val =>{
+            return <img width="100" height="100" src={typeof val === "string" ? val : URL.createObjectURL(val)} />
+          })}
           </div>
 
           {/* Image upload */}
