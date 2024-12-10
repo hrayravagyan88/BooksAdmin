@@ -14,8 +14,10 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     granny_name: "",
     mail: "",
     note:"",
+    status:""
   });
-  const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]); 
+  const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]);
+  const [statuses]=  useState(["Չվճարված", "Վճարված", "Նկարվում է",'Ավարտված'])  
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -179,6 +181,26 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
               {cities.map((city) => (
                 <option key={city} value={city}>
                   {city}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Status</label>
+            <select
+              name="status"
+              value={orderData.status|| statuses[0]}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            >
+              <option value="" disabled>
+                Select a Status
+              </option>
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
                 </option>
               ))}
             </select>
