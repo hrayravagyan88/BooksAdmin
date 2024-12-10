@@ -177,15 +177,15 @@ const Profile = () => {
                       </button>
                     </td>
                   ) : (
-                    <td className="border border-gray-300 px-4 py-2">
+                    <td className="border border-gray-300 p-2">
                       <button
-                        className="h-[32px] bg-yellow-500 text-white px-4 py-1 rounded mr-2"
+                        className="text-blue-500 hover:underline mr-2"
                         onClick={() => handleEdit(item.collectionId,item.doc_id)}
                       >
                         Edit
                       </button>
                       <button
-                        className="h-[32px] bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        className="text-red-500 hover:underline"
                         onClick={() => handleDelete(item.collectionId)}
                       >
                         Delete
@@ -203,9 +203,7 @@ const Profile = () => {
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
             onClick={() => setSelectedImage(null)} // Close modal on click
           >
-
           </div>
-
         )}
       </div>
     </div>
