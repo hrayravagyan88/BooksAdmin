@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { doc, getDoc } from "firebase/firestore";
 
 
-const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
+const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
@@ -15,12 +15,12 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
     fullName: "",
     granny_name: "",
     mail: "",
-    note:"",
-    status:'',
-    phone:""
+    note: "",
+    status: '',
+    phone: ""
   });
-  const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]); 
-  const [statuses]=  useState(["Չվճարված", "Վճարված", "Նկարվում է",'Ավարտված'])  
+  const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան", "Սևան", "Հրազդան", "Չարենցավան", "Արարատ", "Վաղարշապատ", "Գորիս", "Աշտարակ", "Սիսիան"]);
+  const [statuses] = useState(["Not Paid", "Paid", "In Painting", "In Printing", "Done"])
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,26 +32,26 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
         const orderDoc = doc(db, "Order", orderId);
         const docSnap = await getDoc(orderDoc)
         if (docSnap.exists()) {
-            const data = docSnap.data();
-            const imageUrls = Object.values(data.Images)
-            //.filter((key) => key.startsWith("media-")) // Filter keys starting with 'media-'
-            //.map((key) => data[key]);
-            
-            setImageFiles(imageUrls)
-            
-            setOrderData({
-                address: data.address || "",
-                city: data.city || "",
-                delivery: data.delivery || false,
-                doc_id: book, // The document ID from Firestore
-                fullName: data.fullName || "",
-                granny_name: data.granny_name || "",
-                mail: data.mail || "",
-                note: data.note || "",
-                phone:data.phone || "",
-                status:data.status || statuses[0]
-              });         
-        } 
+          const data = docSnap.data();
+          const imageUrls = Object.values(data.Images)
+          //.filter((key) => key.startsWith("media-")) // Filter keys starting with 'media-'
+          //.map((key) => data[key]);
+
+          setImageFiles(imageUrls)
+
+          setOrderData({
+            address: data.address || "",
+            city: data.city || "",
+            delivery: data.delivery || false,
+            doc_id: book, // The document ID from Firestore
+            fullName: data.fullName || "",
+            granny_name: data.granny_name || "",
+            mail: data.mail || "",
+            note: data.note || "",
+            phone: data.phone || "",
+            status: data.status || statuses[0]
+          });
+        }
         const bookRef = collection(db, "books");
         const bookSnapshot = await getDocs(bookRef);
         const bookList = bookSnapshot.docs.map((doc) => ({
@@ -81,11 +81,19 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
 
   const uploadImages = async () => {
     const imageURLs = [];
+
+    console.log(imageFiles)
+
     for (const file of imageFiles) {
-      const storageRef = ref(storage, `orders/${file.name}`);
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      imageURLs.push(downloadURL);
+      if (typeof file === "string") {
+        imageURLs.push(file);
+      } else {
+        const storageRef = ref(storage, `orders/${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        
+        imageURLs.push(downloadURL);
+      }
     }
     return imageURLs;
   };
@@ -101,10 +109,10 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
         return acc;
       }, {});
 
-      const order = { ...orderData,Images:result};
+      const order = { ...orderData, Images: result };
       const docRef = doc(db, 'Order', orderId);
 
-        await updateDoc(docRef, order);
+      await updateDoc(docRef, order);
       alert("Order added successfully!");
       clodeEditModal();
       handleNewOrder();
@@ -133,7 +141,7 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
               required
             />
           </div>
-    
+
           {/* Full Name */}
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Full Name</label>
@@ -232,9 +240,9 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
             </select>
           </div>
 
-          
-           {/* Delivery */}
-           <div className="mb-1 flex items-center">
+
+          {/* Delivery */}
+          <div className="mb-1 flex items-center">
             <input
               type="checkbox"
               name="delivery"
@@ -244,8 +252,8 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
             />
             <label className="text-sm font-medium">Delivery (Yes/No)</label>
           </div>
-            {/* Book Dropdown */}
-            <div className="mb-1">
+          {/* Book Dropdown */}
+          <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Select Book</label>
             <select
               name="doc_id"
@@ -266,9 +274,9 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
           </div>
 
           <div className="flex gap-4">
-          {imageFiles.map(val =>{
-            return <img width="60" height="60" src={typeof val === "string" ? val : URL.createObjectURL(val)} />
-          })}
+            {imageFiles.map(val => {
+              return <img width="60" height="60" src={typeof val === "string" ? val : URL.createObjectURL(val)} />
+            })}
           </div>
 
           {/* Image upload */}
@@ -280,7 +288,7 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
               multiple
               onChange={handleImageChange}
               className="w-full border rounded px-3 py-1"
-              required
+
             />
           </div>
 

@@ -17,7 +17,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     status:""
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]);
-  const [statuses]=  useState(["Չվճարված", "Վճարված", "Նկարվում է",'Ավարտված'])  
+  const [statuses]=  useState(["Not Paid", "Paid", "In Painting","In Printing", "Done"])  
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
