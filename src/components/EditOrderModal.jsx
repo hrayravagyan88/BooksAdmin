@@ -16,9 +16,11 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
     granny_name: "",
     mail: "",
     note:"",
+    status:'',
     phone:""
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]); 
+  const [statuses]=  useState(["Չվճարված", "Վճարված", "Նկարվում է",'Ավարտված'])  
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +49,7 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
                 mail: data.mail || "",
                 note: data.note || "",
                 phone:data.phone || "",
-
+                status:data.status || statuses[0]
               });         
         } 
         const bookRef = collection(db, "books");
@@ -210,6 +212,26 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
             </select>
           </div>
 
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Status</label>
+            <select
+              name="status"
+              value={orderData.status}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            >
+              <option value="" disabled>
+                Select a status
+              </option>
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+
           
            {/* Delivery */}
            <div className="mb-1 flex items-center">
@@ -245,7 +267,7 @@ const EditOrderModal = ({ orderId,book,clodeEditModal,handleNewOrder}) => {
 
           <div className="flex gap-4">
           {imageFiles.map(val =>{
-            return <img width="100" height="100" src={typeof val === "string" ? val : URL.createObjectURL(val)} />
+            return <img width="60" height="60" src={typeof val === "string" ? val : URL.createObjectURL(val)} />
           })}
           </div>
 

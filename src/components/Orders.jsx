@@ -122,7 +122,6 @@ const Profile = () => {
           <table className=" overflow-auto table-auto w-full border-collapse border border-gray-200">
             <thead className="bg-gray-100">
               <tr className="text-xs">
-
                 <th  className="border border-gray-300 px-4 py-2">BookName</th>
                 <th  className="border border-gray-300 px-4 py-2">Address</th>
                 <th  className="border border-gray-300 px-4 py-2">City</th>
@@ -130,6 +129,7 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
                 <th  className="border border-gray-300 px-4 py-2">FullName</th>
                 <th className="border border-gray-300 px-4 py-2">Note</th>
+                <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
                 <th  className="border border-gray-300 px-4 py-2">Images</th>
                 <th  className="border border-gray-300 px-4 py-2">Action</th>
@@ -147,6 +147,7 @@ const Profile = () => {
                   <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
                   <td  className="border border-gray-300 ">{item.fullName || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.note || "N/A"}</td>
+                  <td className="border border-gray-300 ">{item.status || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
                   <td  className="border min-w-3 border-gray-300">
                     <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
