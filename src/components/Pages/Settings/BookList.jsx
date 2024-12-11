@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs ,deleteDoc,doc} from "firebase/firestore";
 import { db } from "../../../../firebase"; // Import your firebase configuration
-
+import AddBookModal from './AddBookModal'
 const BooksList = () => {
   const [books, setBooks] = useState([]); // State to hold books data
   const [loading, setLoading] = useState(true); // Loading state
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const fetchBooks = async () => {
     try {
@@ -41,10 +42,25 @@ const BooksList = () => {
     }
 
   };
+  const handleAddOrder = () => {
+    setShowAddModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+  };
+  const handleNewOrder = () => {
+    fetchData();
+  }
   // Render table
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-lg font-bold mb-4">Books Table</h2>
+      <button
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+          onClick={handleAddOrder}
+        >
+          Add Order
+        </button>
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -130,7 +146,11 @@ const BooksList = () => {
             <img src = {selectedImage} />
           </div>
         )}
+        {showAddModal && (
+          <AddBookModal handleNewOrder={handleNewOrder} closeModal={handleCloseModal} />
+        )}
     </div>
+    
   );
 };
 
