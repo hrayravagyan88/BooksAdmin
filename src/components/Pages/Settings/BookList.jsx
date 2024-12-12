@@ -49,7 +49,7 @@ const BooksList = () => {
     setShowAddModal(false);
   };
   const handleNewOrder = () => {
-    fetchData();
+    fetchBooks();
   }
   // Render table
   return (
@@ -75,7 +75,7 @@ const BooksList = () => {
               <th className="border border-gray-300 p-2">Images</th>
               <th className="border border-gray-300 p-2">Is Active</th>
               <th className="border border-gray-300 p-2">Is Visible Home</th>
-              <th className="border border-gray-300 p-2">Order</th>
+              <th className="border border-gray-300 p-2">Sequence</th>
               <th className="border border-gray-300 p-2">Actions</th>
             </tr>
           </thead>
@@ -85,7 +85,7 @@ const BooksList = () => {
                 <td className="border border-gray-300 p-2">{book.title}</td>
                 <td className="border border-gray-300 p-2">{book.description1}</td>
                 <td className="border border-gray-300 p-2">{book.description2}</td>
-                <td className="border border-gray-300 p-2">${book.price}</td>
+                <td className="border border-gray-300 p-2">֏{book.price}</td>
                 <td className="border border-gray-300 p-2">
                   <img
                     src={book.mainImage}
@@ -123,7 +123,7 @@ const BooksList = () => {
                     disabled
                   />
                 </td>
-                <td className="border border-gray-300 p-2">{book.order}</td>
+                <td className="border border-gray-300 p-2">{book.sequence}</td>
                 <td className="border border-gray-300 p-2">
                   {/* Add Edit/Delete buttons here */}
                   <button className="text-blue-500 hover:underline mr-2">

@@ -19,15 +19,6 @@ const Sidebar = ({ setCurrentView }) => {
                     onClick={() => setCurrentView("AllBooks")} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
                     Books
                 </li>
-                    <ul className="ml-3">
-                    <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer" onClick={() => setCurrentView("AddBook")}>
-                            Add Book
-                    </li>
-                    <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer" onClick={() => setCurrentView("AllBooks")}>
-                           Show ALl books / edit
-                       
-                    </li>
-                </ul>
                 <li onClick={() => setCurrentView("ContactUs")} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">Contact Us</li>
                 <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
                     Log Out

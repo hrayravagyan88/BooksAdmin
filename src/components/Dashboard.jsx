@@ -5,7 +5,6 @@ import LeftSideBar from "./LeftSideBar";
 
 import Home from "./Home";
 import Orders from "./Orders"
-import AddBook from "./Pages/Settings/AddBook";
 import ContactUs from "./ContactUs";
 //import BooksList from "./Pages/Settings/BooksList";
 import BooksList from "./Pages/Settings/BookList";
@@ -17,8 +16,6 @@ const Dashboard = () => {
         return <Home />;
       case "Orders":
         return <Orders />;
-      case "AddBook":
-        return <AddBook />;
       case "ContactUs":
         return <ContactUs />;
       case "AllBooks":

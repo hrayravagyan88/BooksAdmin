@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, addDoc,Timestamp  } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from "../../../../firebase";
+import { db ,storage} from "../../../../firebase";
 import { v4 as uuidv4 } from 'uuid';
 
 const AddBookModal = ({ closeModal,handleNewOrder}) => {
@@ -10,12 +10,14 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         description1: "",
         description2: "",
         price: "",
-        
+        isActive:false,
+        isVisibleHome:true,
+        sequence:''
+
       });
 
   const [imageFiles, setImageFiles] = useState([]);
   const [mainImage, setMainImage] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   // Fetch books from Firestore
@@ -55,44 +57,34 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
     setLoading(true);
 
     try {
-      let imageUrls = [];
-
-      const MainimageRef = ref(storage,`books/${mainimage.name}`);
-      const snapshot = await uploadBytes(MainimageRef, mainimage);
-      const url = await getDownloadURL(snapshot.ref);
-
-      for (let i = 0; i < images.length; i++) {
-        const imageRef = ref(storage, `books/${images[i].name}`);
-        await uploadBytes(imageRef, images[i]);
-        const downloadURL = await getDownloadURL(imageRef);
-        imageUrls.push(downloadURL);
-      }
-
-      // Add book details to Firestore
-      await addDoc(collection(db, "books"), {
-        ...bookDetails,
-        price: bookDetails.price,
-        id: uniqueId,
-        mainImage:url,
-        images: imageUrls,
-      });
-
-      alert("Book added successfully!");
-      setMainImage([]);
-      setBookDetails({
-        title: "",
-        description1: "",
-        description2: "",
-        price: "",
-      });
-      setImages([]);
+        let imageUrls = [];
+        const mainImageRef = ref(storage, `books/${mainImage.name}`);
+        const snapshot = await uploadBytes(mainImageRef, mainImage);
+        const url = await getDownloadURL(snapshot.ref);
       
-    } catch (error) {
-      console.error("Error adding book: ", error);
-      alert("Failed to add book.");
-    } finally {
-      setLoading(false);
-    }
+        for (let i = 0; i < imageFiles.length; i++) {
+          const imageRef = ref(storage, `books/${imageFiles[i].name}`);
+          await uploadBytes(imageRef, imageFiles[i]);
+          const downloadURL = await getDownloadURL(imageRef);
+          imageUrls.push(downloadURL);
+        }
+      
+        await addDoc(collection(db, "books"), {
+          ...bookDetails,
+          price: bookDetails.price,
+          id: uniqueId,
+          mainImage: url,
+          images: imageUrls,
+        });
+      
+        alert("Book added successfully!");
+        closeModal();
+        handleNewOrder();
+      } catch (error) {
+        alert("Failed to add book.");
+      } finally {
+        setLoading(false);
+      }
   };
 
   return (
@@ -141,6 +133,41 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
             value={bookDetails.price}
             onChange={handleInputChange}
             required
+          />
+        </div>
+
+        <div>
+          <label>Sequence (Order)::</label>
+          <input
+            className="w-full px-4 py-2 border border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
+            type="number"
+            name="sequence"
+            value={bookDetails.sequence}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+
+        <div>
+          <label>Is Active:</label>
+          <input
+            className="ml-5 "
+            type="checkbox"
+            name="isActive"
+            checked={bookDetails.isActive}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
+          <label>Is Visible Home:</label>
+          <input
+            className="ml-5"
+            type="checkbox"
+            name="isVisibleHome"
+            checked={bookDetails.isVisibleHome}
+            onChange={handleInputChange}
           />
         </div>
         <div>
