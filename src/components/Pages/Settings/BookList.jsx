@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs ,deleteDoc,doc} from "firebase/firestore";
 import { db } from "../../../../firebase"; // Import your firebase configuration
-import AddBookModal from './AddBookModal'
+import AddBookModal from './AddBookModal';
+import { EditBookModal } from "./EditBookModal";
 const BooksList = () => {
   const [books, setBooks] = useState([]); // State to hold books data
   const [loading, setLoading] = useState(true); // Loading state
   const [selectedImage, setSelectedImage] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedBook,setselectedBook] = useState('');
+  const [showEditModal, setshowEditModal] = useState(false);
+
+
 
   const fetchBooks = async () => {
     try {
@@ -51,6 +56,15 @@ const BooksList = () => {
   const handleNewOrder = () => {
     fetchBooks();
   }
+  const handleCloseEditModal = () => {
+    setshowEditModal(false)
+  };
+
+  const handleEdit = (orderId) => {
+    setselectedBook(orderId)
+    setshowEditModal(true); // Set order to be edited
+  };
+
   // Render table
   return (
     <div className="container mx-auto p-4">
@@ -60,7 +74,10 @@ const BooksList = () => {
           onClick={handleAddOrder}
         >
           Add Order
-        </button>
+      </button>
+      {showEditModal && (
+          <EditBookModal BookId= {selectedBook} handleNewOrder={handleNewOrder} clodeEditModal={handleCloseEditModal} />
+        )}
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -126,7 +143,9 @@ const BooksList = () => {
                 <td className="border border-gray-300 p-2">{book.sequence}</td>
                 <td className="border border-gray-300 p-2">
                   {/* Add Edit/Delete buttons here */}
-                  <button className="text-blue-500 hover:underline mr-2">
+                  <button
+                   onClick={() => handleEdit(book.collectionId)}
+                   className="text-blue-500 hover:underline mr-2">
                     Edit
                   </button>
                   <button    onClick={() => handleDelete(book.collectionId)} className="text-red-500 hover:underline">

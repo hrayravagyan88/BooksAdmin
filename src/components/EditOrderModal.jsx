@@ -81,9 +81,6 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
 
   const uploadImages = async () => {
     const imageURLs = [];
-
-    console.log(imageFiles)
-
     for (const file of imageFiles) {
       if (typeof file === "string") {
         imageURLs.push(file);
@@ -91,7 +88,6 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
         const storageRef = ref(storage, `orders/${file.name}`);
         const snapshot = await uploadBytes(storageRef, file);
         const downloadURL = await getDownloadURL(snapshot.ref);
-        
         imageURLs.push(downloadURL);
       }
     }
