@@ -56,19 +56,15 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
         e.preventDefault();
         setLoading(true);
         try {
-            console.log(NewImageFile.length)
-            console.log('main',mainImage)
+
         const storage = getStorage();
-        const filePath =`books/${bookId}/mainImage`;
+        const filePath =`books/${BookId}/mainImage`;
         const storageRefMain = ref(storage, filePath);
         const MianImage = await uploadBytes(storageRefMain, NewImageFile);
         const downloadMainURL = await getDownloadURL(storageRefMain);
         const uploadedImages = await uploadImages();
-
-
-          //const book = { ...bookDetails, images: uploadedImages ,mainImage:downloadMainURL};
-          //const docRef = doc(db, 'books', BookId);
-          console.log(book)
+          const book = { ...bookDetails, images: uploadedImages ,mainImage:downloadMainURL};
+          const docRef = doc(db, 'books', BookId);
           await updateDoc(docRef, book);
           alert("Order added successfully!");
           clodeEditModal();
@@ -236,7 +232,7 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
                   className="bg-blue-500 text-white px-4 py-1 rounded"
                   disabled={loading}
                 >
-                  {loading ? "Adding..." : "Add Order"}
+                  {loading ? "Editing..." : "Edit Order"}
                 </button>
               </div>
             </form>

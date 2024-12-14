@@ -34,6 +34,7 @@ const Profile = () => {
       for (const orderDoc of MyNewSnapshot) {
         const orderData = orderDoc
         const bookId = orderData.doc_id;
+        console.log(orderData,'orderData')
         if (bookId) {
 
           const bookDocRef = doc(db, "books", bookId);

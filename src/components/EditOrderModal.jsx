@@ -123,7 +123,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6">
-        <h2 className="text-xl font-bold mb-1">Add New Order</h2>
+        <h2 className="text-xl font-bold mb-1">Edit an Order</h2>
         <form onSubmit={handleSubmit}>
           {/* Address */}
           <div className="mb-1">
