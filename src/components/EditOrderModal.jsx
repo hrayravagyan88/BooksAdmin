@@ -10,7 +10,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
-    delivery: false,
+    delivery: "",
     doc_id: "",
     fullName: "",
     granny_name: "",
@@ -21,6 +21,8 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան", "Սևան", "Հրազդան", "Չարենցավան", "Արարատ", "Վաղարշապատ", "Գորիս", "Աշտարակ", "Սիսիան"]);
   const [statuses] = useState(["Not Paid", "Paid", "In Painting", "In Printing", "Done"])
+  const [deliveryStatuses] = useState(['False', 'True', "Delivered", "Out of delivery"])
+
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -42,7 +44,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
           setOrderData({
             address: data.address || "",
             city: data.city || "",
-            delivery: data.delivery || false,
+            delivery: data.delivery || deliveryStatuses[0],
             doc_id: book, // The document ID from Firestore
             fullName: data.fullName || "",
             granny_name: data.granny_name || "",
@@ -238,15 +240,24 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
 
 
           {/* Delivery */}
-          <div className="mb-1 flex items-center">
-            <input
-              type="checkbox"
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Delivery Status</label>
+            <select
               name="delivery"
-              checked={orderData.delivery}
+              value={orderData.delivery}
               onChange={handleInputChange}
-              className="mr-2"
-            />
-            <label className="text-sm font-medium">Delivery (Yes/No)</label>
+              className="w-full border rounded px-3 py-1"
+              required
+            >
+              <option value="" disabled>
+                Select a status
+              </option>
+              {deliveryStatuses.map((delivery) => (
+                <option key={delivery} value={delivery}>
+                  {delivery}
+                </option>
+              ))}
+            </select>
           </div>
           {/* Book Dropdown */}
           <div className="mb-1">
