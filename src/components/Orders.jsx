@@ -26,15 +26,18 @@ const Profile = () => {
       const ordersQuery = query(ordersRef, orderBy("createdDate", "asc"));
       const querySnapshot = await getDocs(ordersQuery);
       const updatedOrders = [];
-      let MyNewSnapshot = querySnapshot.docs.map((doc) => ({
-        collectionId: doc.id, // Include the Firestore document ID
-        ...doc.data(),
-      }));
+      let MyNewSnapshot = querySnapshot.docs.map((doc) => {
+        const docData = doc.data();
+        return {
+          collectionId: doc.id,// Include the Firestore document ID
+          ...doc.data(),
+          date:docData.createdDate ? docData.createdDate.toDate() : null,
+        }
+      });
 
       for (const orderDoc of MyNewSnapshot) {
         const orderData = orderDoc
         const bookId = orderData.doc_id;
-        console.log(orderData,'orderData')
         if (bookId) {
 
           const bookDocRef = doc(db, "books", bookId);
@@ -132,6 +135,7 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">Note</th>
                 <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
+                <th className="border border-gray-300 px-4 py-2">Created Date</th>
                 <th  className="border border-gray-300 px-4 py-2">Images</th>
                 <th  className="border border-gray-300 px-4 py-2">Action</th>
               </tr>
@@ -150,6 +154,11 @@ const Profile = () => {
                   <td className="border border-gray-300 ">{item.note || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.status || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
+                  <td className="border border-gray-300 ">
+                  {item.date
+                ? `${item.date.toLocaleDateString("en-US")} ${item.date.toLocaleTimeString("en-US")}`
+                : "No Date"}
+                   </td>
                   <td  className="border min-w-3 border-gray-300">
                     <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
                       <img
