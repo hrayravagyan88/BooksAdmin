@@ -59,14 +59,17 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
 
         const storage = getStorage();
         const filePath =`books/${BookId}/mainImage`;
-      
-        const storageRefMain = ref(storage, filePath);
-        const uploadedMainImage = await uploadBytes(storageRefMain, NewImageFile);
-        const url = await getDownloadURL(uploadedMainImage.ref);
+        let url;
 
+        if (NewImageFile) {
+          const storageRefMain = ref(storage, filePath);
+          const uploadedMainImage = await uploadBytes(storageRefMain, NewImageFile);
+          url = await getDownloadURL(uploadedMainImage.ref);
+        }
+   
         const uploadedImages = await uploadImages();
 
-          const book = { ...bookDetails, images: uploadedImages ,mainImage: NewImageFile ? url : mainImage};
+          const book = { ...bookDetails, images: uploadedImages ,mainImage:  url || mainImage};
           const docRef = doc(db, 'books', BookId);
           await updateDoc(docRef, book);
           alert("Order added successfully!");
