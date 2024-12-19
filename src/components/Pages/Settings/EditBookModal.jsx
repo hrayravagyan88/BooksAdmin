@@ -59,11 +59,14 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
 
         const storage = getStorage();
         const filePath =`books/${BookId}/mainImage`;
+      
         const storageRefMain = ref(storage, filePath);
         const MianImage = await uploadBytes(storageRefMain, NewImageFile);
         const downloadMainURL = await getDownloadURL(storageRefMain);
+        
         const uploadedImages = await uploadImages();
-          const book = { ...bookDetails, images: uploadedImages ,mainImage:downloadMainURL};
+
+          const book = { ...bookDetails, images: uploadedImages ,mainImage: mainImage.indexOf('firebasestorage') === -1 ? downloadMainURL : mainImage};
           const docRef = doc(db, 'books', BookId);
           await updateDoc(docRef, book);
           alert("Order added successfully!");
