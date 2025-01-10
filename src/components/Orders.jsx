@@ -20,10 +20,9 @@ const Profile = () => {
   }, []);
 
   const fetchData = async () => {
-    const collectionName = 'Order'
     try {
       const ordersRef = collection(db, "Order");
-      const ordersQuery = query(ordersRef, orderBy("createdDate", "asc"));
+      const ordersQuery = query(ordersRef);
       const querySnapshot = await getDocs(ordersQuery);
       const updatedOrders = [];
       let MyNewSnapshot = querySnapshot.docs.map((doc) => {
@@ -34,12 +33,10 @@ const Profile = () => {
           date:docData.createdDate ? docData.createdDate.toDate() : null,
         }
       });
-
       for (const orderDoc of MyNewSnapshot) {
         const orderData = orderDoc
         const bookId = orderData.doc_id;
         if (bookId) {
-
           const bookDocRef = doc(db, "books", bookId);
           const bookDocSnap = await getDoc(bookDocRef);
           if (bookDocSnap.exists()) {
@@ -52,9 +49,9 @@ const Profile = () => {
           updatedOrders.push({ ...orderData, bookTitle: "No Book Assigned" });
         }
       }
-
       setData(updatedOrders);
     } catch (error) {
+      console.log(error)
     } finally {
       setLoading(false);
     }
