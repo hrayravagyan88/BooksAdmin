@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
-import { collection, doc, getDoc, getDocs, deleteDoc,query,orderBy } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, deleteDoc, query, orderBy } from "firebase/firestore";
 import AddOrderModal from "./AddOrderModal";
 import EditOrderModal from "./EditOrderModal"
 
@@ -9,11 +9,14 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setshowEditModal] = useState(false);
-  const [selectedOrder,setSelectedOrder] = useState('')
-  const [selectBook,setSelectBook] = useState('')
+  const [selectedOrder, setSelectedOrder] = useState('')
+  const [selectBook, setSelectBook] = useState('')
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
+
+  const [searchDocId, setSearchDocId] = useState('');
+  const [filteredData, setFilteredData] = useState(data);
 
   useEffect(() => {
     fetchData();
@@ -30,7 +33,7 @@ const Profile = () => {
         return {
           collectionId: doc.id,// Include the Firestore document ID
           ...doc.data(),
-          date:docData.createdDate ? docData.createdDate.toDate() : null,
+          date: docData.createdDate ? docData.createdDate.toDate() : null,
         }
       });
       for (const orderDoc of MyNewSnapshot) {
@@ -50,6 +53,7 @@ const Profile = () => {
         }
       }
       setData(updatedOrders);
+      setFilteredData(updatedOrders);
     } catch (error) {
       console.log(error)
     } finally {
@@ -57,11 +61,9 @@ const Profile = () => {
     }
   };
   const handleSave = (orderId) => {
-    // Save logic here - Update Firebase with new values
-    // Then reset editing state
     setEditingOrder(null);
   };
-  const handleEdit = (orderId,books) => {
+  const handleEdit = (orderId, books) => {
     setSelectedOrder(orderId)
     setSelectBook(books)
     setshowEditModal(true); // Set order to be edited
@@ -78,7 +80,6 @@ const Profile = () => {
       await deleteDoc(doc(db, "Order", orderId));
       fetchData();
     }
-
   };
 
   if (loading) {
@@ -87,7 +88,6 @@ const Profile = () => {
   const handleAddOrder = () => {
     setShowAddModal(true);
   };
-
   const handleCloseModal = () => {
     setShowAddModal(false);
   };
@@ -97,20 +97,58 @@ const Profile = () => {
   const handleNewOrder = () => {
     fetchData();
   }
+
+  const handleFilterByDocId = () => {
+    if (!searchDocId.trim()) {
+      setFilteredData(data); // If input is empty, show all data
+    } else {
+      const filteredOrders = data.filter(
+        (order) => order.collectionId === searchDocId.trim() // Match the input with the Firestore doc id
+      );
+      setFilteredData(filteredOrders);
+    }
+  };
+
+  const handleReset = () => {
+    setSearchDocId(''); // Clear search input
+    setFilteredData(data); // Reset to show all orders
+  };
+
   return (
     <div className="pl-10 container mx-auto p-4 pl-0">
       <h1 className="text-2xl font-bold text-center mb-8">Orders</h1>
       <div className="overflow-auto">
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={handleAddOrder}
-        >
-          Add Order
-        </button>
+        <div className="mb-4 flex gap-4">
+          <input
+            type="text"
+            placeholder="Enter Document ID"
+            value={searchDocId}
+            onChange={(e) => setSearchDocId(e.target.value)} // Update searchDocId state
+            className="border border-gray-300 px-4 py-2 rounded"
+          />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleFilterByDocId} // Apply the filter
+          >
+            Search
+          </button>
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded"
+            onClick={handleReset} // Reset the filter
+          >
+            Reset
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={handleAddOrder}
+          >
+            Add Order
+          </button>
+        </div>
 
         {/* Add Order Modal */}
         {showEditModal && (
-          <EditOrderModal orderId= {selectedOrder} book = {selectBook} handleNewOrder={handleNewOrder} clodeEditModal={handleCloseEditModal} />
+          <EditOrderModal orderId={selectedOrder} book={selectBook} handleNewOrder={handleNewOrder} clodeEditModal={handleCloseEditModal} />
         )}
 
         {showAddModal && (
@@ -123,40 +161,44 @@ const Profile = () => {
           <table className=" overflow-auto table-auto w-full border-collapse border border-gray-200">
             <thead className="bg-gray-100">
               <tr className="text-xs">
-                <th  className="border border-gray-300 px-4 py-2">BookName</th>
-                <th  className="border border-gray-300 px-4 py-2">Address</th>
-                <th  className="border border-gray-300 px-4 py-2">City</th>
-                <th  className="border border-gray-300 px-4 py-2">DeLivery</th>
+                <th className="border border-gray-300 px-4 py-2">BookName</th>
+                <th className="border border-gray-300 px-4 py-2">Address</th>
+                <th className="border border-gray-300 px-4 py-2">City</th>
+                <th className="border border-gray-300 px-4 py-2">DeLivery</th>
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
-                <th  className="border border-gray-300 px-4 py-2">FullName</th>
+                <th className="border border-gray-300 px-4 py-2">FullName</th>
                 <th className="border border-gray-300 px-4 py-2">Note</th>
                 <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
                 <th className="border border-gray-300 px-4 py-2">Created Date</th>
-                <th  className="border border-gray-300 px-4 py-2">Images</th>
-                <th  className="border border-gray-300 px-4 py-2">Action</th>
+                <th className="border border-gray-300 px-4 py-2">Images</th>
+                <th className="border border-gray-300 px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item,index) => {
+              {
+              filteredData.length === 0 ? (
+                <tr><td colSpan="12" className="text-center">No data available</td></tr>
+              ):
+              filteredData.map((item, index) => {
                 //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
-                const Images  = Object.entries(item.Images)
-                return (<tr key= {`${item.id}-${index}`} className="text-xs" >
-                  <td  className="border border-gray-300 ">{item.bookTitle}</td>
-                  <td  className="border border-gray-300 ">{item.address}</td>
+                const Images = Object.entries(item.Images)
+                return (<tr key={`${item.id}-${index}`} className="text-xs" >
+                  <td className="border border-gray-300 ">{item.bookTitle}</td>
+                  <td className="border border-gray-300 ">{item.address}</td>
                   <td className="border border-gray-300 ">{item.city || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.delivery ? "Yes" : "NO"}</td>
                   <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
-                  <td  className="border border-gray-300 ">{item.fullName || "N/A"}</td>
+                  <td className="border border-gray-300 ">{item.fullName || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.note || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.status || "N/A"}</td>
                   <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
                   <td className="border border-gray-300 ">
-                  {item.date
-                ? `${item.date.toLocaleDateString("en-US")} ${item.date.toLocaleTimeString("en-US")}`
-                : "No Date"}
-                   </td>
-                  <td  className="border min-w-3 border-gray-300">
+                    {item.date
+                      ? `${item.date.toLocaleDateString("en-US")} ${item.date.toLocaleTimeString("en-US")}`
+                      : "No Date"}
+                  </td>
+                  <td className="border min-w-3 border-gray-300">
                     <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
                       <img
                         key={key}
@@ -187,7 +229,7 @@ const Profile = () => {
                     <td className="border border-gray-300 p-2">
                       <button
                         className="text-blue-500 hover:underline mr-2"
-                        onClick={() => handleEdit(item.collectionId,item.doc_id)}
+                        onClick={() => handleEdit(item.collectionId, item.doc_id)}
                       >
                         Edit
                       </button>
@@ -210,7 +252,7 @@ const Profile = () => {
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
             onClick={() => setSelectedImage(null)} // Close modal on click
           >
-            <img src = {selectedImage} />
+            <img src={selectedImage} />
           </div>
         )}
       </div>
