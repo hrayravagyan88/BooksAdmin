@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, addDoc,Timestamp  } from "firebase/firestore";
+import { collection, getDocs, addDoc,serverTimestamp  } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../../firebase"; // Your Firebase config file
 import { v4 as uuidv4 } from 'uuid';
@@ -75,7 +75,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
         return acc;
       }, {});
 
-      const order = { ...orderData,Images:result,createdDate: Timestamp.now(),};
+      const order = { ...orderData,Images:result,createdDate: serverTimestamp()};
       const orderRef = collection(db, "Order");
       await addDoc(orderRef, order);
 
