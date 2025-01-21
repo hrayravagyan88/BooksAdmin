@@ -114,7 +114,7 @@ const Profile = () => {
     setFilteredData(data); // Reset to show all orders
   };
   const downloadImages = (images) => {
-    try {
+   /* try {
       images.forEach(([key, url]) => {
         fetch(url,{ mode: 'no-cors' })
           .then((response) => {
@@ -142,6 +142,7 @@ const Profile = () => {
     } catch (error) {
       console.error("Error in downloadImages:", error);
     }
+      */
   };
   
   
