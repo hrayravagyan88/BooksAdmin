@@ -113,6 +113,39 @@ const Profile = () => {
     setSearchDocId(''); // Clear search input
     setFilteredData(data); // Reset to show all orders
   };
+  const downloadImages = (images) => {
+    try {
+      images.forEach(([key, url]) => {
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.blob(); // Convert response to blob
+          })
+          .then((blob) => {
+            const link = document.createElement("a");
+            const objectUrl = URL.createObjectURL(blob);
+            link.href = objectUrl; // Create a temporary URL for the blob
+            link.download = `${key}.jpeg`; // Use the key as the file name
+            document.body.appendChild(link);
+            link.click(); // Trigger download
+            document.body.removeChild(link); // Clean up
+            URL.revokeObjectURL(objectUrl); // Revoke the blob URL
+          })
+          .catch((error) => {
+            console.error("Error downloading image:", error);
+          });
+      });
+  
+      console.log("Images downloaded successfully");
+    } catch (error) {
+      console.error("Error in downloadImages:", error);
+    }
+  };
+  
+  
+  
 
   return (
     <div className="pl-10 container mx-auto p-4 pl-0">
@@ -177,73 +210,82 @@ const Profile = () => {
             </thead>
             <tbody>
               {
-              filteredData.length === 0 ? (
-                <tr><td colSpan="12" className="text-center">No data available</td></tr>
-              ):
-              filteredData.map((item, index) => {
-                //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
-                const Images = Object.entries(item.Images)
-                return (<tr key={`${item.id}-${index}`} className="text-xs" >
-                  <td className="border border-gray-300 ">{item.bookTitle}</td>
-                  <td className="border border-gray-300 ">{item.address}</td>
-                  <td className="border border-gray-300 ">{item.city || "N/A"}</td>
-                  <td className="border border-gray-300 ">{item.delivery ? "Yes" : "NO"}</td>
-                  <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
-                  <td className="border border-gray-300 ">{item.fullName || "N/A"}</td>
-                  <td className="border border-gray-300 ">{item.note || "N/A"}</td>
-                  <td className="border border-gray-300 ">{item.status || "N/A"}</td>
-                  <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
-                  <td className="border border-gray-300 ">
-                    {item.date
-                      ? `${item.date.toLocaleDateString("en-US")} ${item.date.toLocaleTimeString("en-US")}`
-                      : "No Date"}
-                  </td>
-                  <td className="border min-w-3 border-gray-300">
-                    <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
-                      <img
-                        key={key}
-                        src={value}
-                        alt={`UserImage ${key + 1}`}
-                        className="cursor-pointer w-16 h-16 object-cover rounded "
-                        onClick={() => setSelectedImage(value)}
-                      />
+                filteredData.length === 0 ? (
+                  <tr><td colSpan="12" className="text-center">No data available</td></tr>
+                ) :
+                  filteredData.map((item, index) => {
+                    //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
+                    const Images = Object.entries(item.Images)
+                    return (<tr key={`${item.id}-${index}`} className="text-xs" >
+                      <td className="border border-gray-300 ">{item.bookTitle}</td>
+                      <td className="border border-gray-300 ">{item.address}</td>
+                      <td className="border border-gray-300 ">{item.city || "N/A"}</td>
+                      <td className="border border-gray-300 ">{item.delivery ? "Yes" : "NO"}</td>
+                      <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
+                      <td className="border border-gray-300 ">{item.fullName || "N/A"}</td>
+                      <td className="border border-gray-300 ">{item.note || "N/A"}</td>
+                      <td className="border border-gray-300 ">{item.status || "N/A"}</td>
+                      <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
+                      <td className="border border-gray-300 ">
+                        {item.date
+                          ? `${item.date.toLocaleDateString("en-US")} ${item.date.toLocaleTimeString("en-US")}`
+                          : "No Date"}
+                      </td>
+                      <td className="border min-w-3 border-gray-300">
+                        <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
+                          <img
+                            key={key}
+                            src={value}
+                            alt={`UserImage ${key + 1}`}
+                            className="cursor-pointer w-16 h-16 object-cover rounded "
+                            onClick={() => setSelectedImage(value)}
+                          />
 
-                    ))} </div>
-                  </td>
-                  {editingOrder === item.doc_id ? (
-                    <td className="border border-gray-300 px-4 py-2">
-                      <button
-                        className="bg-blue-500 text-white px-4 py-1 rounded"
-                        onClick={() => handleSave(item.id)}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="bg-red-500 text-white px-4 py-1 rounded ml-2"
-                        onClick={handleCancel}
-                      >
-                        Cancel
-                      </button>
-                    </td>
-                  ) : (
-                    <td className="border border-gray-300 p-2">
-                      <button
-                        className="text-blue-500 hover:underline mr-2"
-                        onClick={() => handleEdit(item.collectionId, item.doc_id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="text-red-500 hover:underline"
-                        onClick={() => handleDelete(item.collectionId)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  )}
+                        ))} </div>
+                      </td>
+                      {editingOrder === item.doc_id ? (
+                        <td className="border border-gray-300 px-4 py-2">
+                          <button
+                            className="bg-blue-500 text-white px-4 py-1 rounded"
+                            onClick={() => handleSave(item.id)}
+                          >
+                            Save
+                          </button>
+                          <button
+                            className="bg-red-500 text-white px-4 py-1 rounded ml-2"
+                            onClick={handleCancel}
+                          >
+                            Cancel
+                          </button>
+                        </td>
+                      ) : (
+                        <td className="border border-gray-300 p-2">
+                           <div className="flex flex-col justify-center items-start gap-2">       
+                          <button
+                            className="text-blue-500 hover:underline px-4 py-2 bg-blue-100 rounded w-full"
+                            onClick={() => handleEdit(item.collectionId, item.doc_id)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-red-500 hover:underline px-4 py-2 bg-red-100 rounded w-full"
+                            onClick={() => handleDelete(item.collectionId)}
+                          >
+                            Delete
+                          </button>
 
-                </tr>)
-              })}
+                          <button
+                            className="text-green-500 hover:underline px-4 py-2 bg-green-100 rounded w-full"
+                            onClick={() => downloadImages(Images)}
+                          >
+                            Download
+                          </button>
+                          </div>
+                        </td>
+                      )}
+
+                    </tr>)
+                  })}
             </tbody>
           </table>
         )}
