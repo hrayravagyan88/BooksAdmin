@@ -116,11 +116,11 @@ const Profile = () => {
   const downloadImages = (images) => {
     try {
       images.forEach(([key, url]) => {
-        fetch(url)
+        fetch(url,{ mode: 'no-cors' })
           .then((response) => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            // if (!response.ok) {
+            //   throw new Error(`HTTP error! Status: ${response.status}`);
+            // }
             return response.blob(); // Convert response to blob
           })
           .then((blob) => {
