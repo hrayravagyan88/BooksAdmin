@@ -190,7 +190,6 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Phone</label>
             <input
-              type="number"
               name="phone"
               value={orderData.phone}
               onChange={handleInputChange}
