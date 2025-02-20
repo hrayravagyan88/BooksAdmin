@@ -110,7 +110,7 @@ const Profile = () => {
   };
 
   const handleReset = () => {
-    setSearchDocId(''); // Clear search input
+    setSearchDocId('');
     setFilteredData(data); // Reset to show all orders
   };
   const downloadImages = (images) => {
@@ -189,7 +189,7 @@ const Profile = () => {
           <AddOrderModal handleNewOrder={handleNewOrder} closeModal={handleCloseModal} />
         )}
 
-        {data.length === 0 ? (
+        {filteredData.filter(item => item.status !== "Done").length === 0 ?(
           <div>No data available</div>
         ) : (
           <table className=" overflow-auto table-auto w-full border-collapse border border-gray-200">
@@ -214,7 +214,9 @@ const Profile = () => {
                 filteredData.length === 0 ? (
                   <tr><td colSpan="12" className="text-center">No data available</td></tr>
                 ) :
-                  filteredData.map((item, index) => {
+                filteredData
+                .filter(item => item.status !== "Done") // ✅ Filter out items with status "done"
+                .map((item, index) => {
                     //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
                     const Images = Object.entries(item.Images)
                     return (<tr key={`${item.id}-${index}`} className="text-xs" >
