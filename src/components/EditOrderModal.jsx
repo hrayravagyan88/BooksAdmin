@@ -10,19 +10,18 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
-    delivery: "",
     doc_id: "",
     fullName: "",
     granny_name: "",
     mail: "",
     note: "",
     status: '',
-    phone: ""
+    phone: "",
+    paystatus:""
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան", "Սևան", "Հրազդան", "Չարենցավան", "Արարատ", "Վաղարշապատ", "Գորիս", "Աշտարակ", "Սիսիան"]);
-  const [statuses] = useState(["Not Paid", "Paid", "In Painting", "In Printing", "Done"])
-  const [deliveryStatuses] = useState(['False', 'True', "Delivered", "Out of delivery"])
-
+  const [statuses]=  useState(["New", "In Painting","In Printing", "Done"]);
+  const [paymentStatuses]=  useState(["Not Paid", "Paid", "Partially Paid"]) 
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,14 +43,14 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
           setOrderData({
             address: data.address || "",
             city: data.city || "",
-            delivery: data.delivery || deliveryStatuses[0],
             doc_id: book, // The document ID from Firestore
             fullName: data.fullName || "",
             granny_name: data.granny_name || "",
             mail: data.mail || "",
             note: data.note || "",
             phone: data.phone || "",
-            status: data.status || statuses[0]
+            status: data.status || statuses[0],
+            paystatus:data.paystatus ||paymentStatuses[0],
           });
         }
         const bookRef = collection(db, "books");
@@ -236,14 +235,11 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
               ))}
             </select>
           </div>
-
-
-          {/* Delivery */}
           <div className="mb-1">
-            <label className="block text-sm font-medium mb-1">Delivery Status</label>
+            <label className="block text-sm font-medium mb-1">Payment Status</label>
             <select
-              name="delivery"
-              value={orderData.delivery}
+              name="paystatus"
+              value={orderData.paystatus}
               onChange={handleInputChange}
               className="w-full border rounded px-3 py-1"
               required
@@ -251,13 +247,17 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
               <option value="" disabled>
                 Select a status
               </option>
-              {deliveryStatuses.map((delivery) => (
-                <option key={delivery} value={delivery}>
-                  {delivery}
+              {paymentStatuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
                 </option>
               ))}
             </select>
           </div>
+
+
+          {/* Delivery */}
+
           {/* Book Dropdown */}
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Select Book</label>

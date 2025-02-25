@@ -198,13 +198,14 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">BookName</th>
                 <th className="border border-gray-300 px-4 py-2">Address</th>
                 <th className="border border-gray-300 px-4 py-2">City</th>
-                <th className="border border-gray-300 px-4 py-2">DeLivery</th>
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
                 <th className="border border-gray-300 px-4 py-2">FullName</th>
-                <th className="border border-gray-300 px-4 py-2">Note</th>
+               
                 <th className="border border-gray-300 px-4 py-2">Status</th>
+                <th className="border border-gray-300 px-4 py-2">Payment Status</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
                 <th className="border border-gray-300 px-4 py-2">Created Date</th>
+                <th className="border border-gray-300 px-4 py-2">Note</th>
                 <th className="border border-gray-300 px-4 py-2">Images</th>
                 <th className="border border-gray-300 px-4 py-2">Action</th>
               </tr>
@@ -220,20 +221,22 @@ const Profile = () => {
                     //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
                     const Images = Object.entries(item.Images)
                     return (<tr key={`${item.id}-${index}`} className="text-xs" >
-                      <td className="border border-gray-300 ">{item.bookTitle}</td>
-                      <td className="border border-gray-300 ">{item.address}</td>
-                      <td className="border border-gray-300 ">{item.city || "N/A"}</td>
-                      <td className="border border-gray-300 ">{item.delivery ? "Yes" : "NO"}</td>
-                      <td className="border border-gray-300 ">{item.mail || "N/A"}</td>
-                      <td className="border border-gray-300 ">{item.fullName || "N/A"}</td>
-                      <td className="border border-gray-300 ">{item.note || "N/A"}</td>
-                      <td className="border border-gray-300 ">{item.status || "N/A"}</td>
-                      <td className="border border-gray-300 ">{item.phone || "N/A"}</td>
-                      <td className="border border-gray-300 ">
+                      <td className="border border-gray-300 text-center">{item.bookTitle}</td>
+                      <td className="border border-gray-300 text-center">{item.address}</td>
+                      <td className="border border-gray-300 text-center">{item.city || "N/A"}</td>
+                    
+                      <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
+                      <td className="border border-gray-300 text-center">{item.fullName || "N/A"}</td>
+                     
+                      <td className="border border-gray-300 text-center">{item.status || "N/A"}</td>
+                      <td className="border border-gray-300 text-center">{item.paystatus || "N/A"}</td>
+                      <td className="border border-gray-300 text-center">{item.phone || "N/A"}</td>
+                      <td className="border border-gray-300 text-center">
                         {item.date
                           ? `${item.date.toLocaleDateString("en-US")} ${item.date.toLocaleTimeString("en-US")}`
                           : "No Date"}
                       </td>
+                       <td  title={item.note || "N/A"} className="text-center border border-gray-300 max-w-[150px] truncate whitespace-nowrap overflow-hidden">{item.note || "N/A"}</td>
                       <td className="border min-w-3 border-gray-300">
                         <div className="grid grid-cols-2 gap-2">   {Images.map(([key, value]) => (
                           <img

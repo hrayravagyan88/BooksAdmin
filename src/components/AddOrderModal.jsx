@@ -5,6 +5,8 @@ import { db, storage } from "../../firebase"; // Your Firebase config file
 import { v4 as uuidv4 } from 'uuid';
 
 const AddOrderModal = ({ closeModal,handleNewOrder}) => {
+  const [statuses]=  useState(["New", "In Painting","In Printing", "Done"])
+  const [paymentStatuses]=  useState(["Not Paid", "Paid", "Partially Paid"]) 
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
@@ -14,10 +16,12 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     granny_name: "",
     mail: "",
     note:"",
-    status:""
+    status:statuses[0]|| "",
+    paystatus:paymentStatuses[0]|| "",
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]);
-  const [statuses]=  useState(["Not Paid", "Paid", "In Painting","In Printing", "Done"])  
+ 
+
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -187,7 +191,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
           </div>
 
           <div className="mb-1">
-            <label className="block text-sm font-medium mb-1">Status</label>
+            <label className="block text-sm font-medium mb-1">Order Status</label>
             <select
               name="status"
               value={orderData.status|| statuses[0]}
@@ -199,6 +203,26 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
                 Select a Status
               </option>
               {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Payment Status</label>
+            <select
+              name="paystatus"
+              value={orderData.paystatus|| paymentStatuses[0]}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            >
+              <option value="" disabled>
+                Select a Status
+              </option>
+              {paymentStatuses.map((status) => (
                 <option key={status} value={status}>
                   {status}
                 </option>
