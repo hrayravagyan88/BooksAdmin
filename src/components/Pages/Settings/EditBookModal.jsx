@@ -165,7 +165,7 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
             </div>
     
             <div>
-              <label>Sequence (Order)::</label>
+              <label>Sequence (Order):</label>
               <input
                 className="w-full px-4 py-2 border border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
                 type="number"
@@ -238,7 +238,7 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
                   className="bg-blue-500 text-white px-4 py-1 rounded"
                   disabled={loading}
                 >
-                  {loading ? "Editing..." : "Edit Order"}
+                  {loading ? "Editing..." : "Edit Book"}
                 </button>
               </div>
             </form>
