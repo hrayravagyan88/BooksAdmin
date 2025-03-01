@@ -9,19 +9,20 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         title: "",
         description1: "",
         description2: "",
+        hardPrice:"",
         price: "",
         isActive:false,
         isVisibleHome:true,
         sequence:''
 
       });
-
+  const [softCoverAvailable,setsoftCoverAvailable]= useState(false)
+  const [hardCoverAvailable,setHardCoverAvailable]= useState(false)
   const [imageFiles, setImageFiles] = useState([]);
   const [mainImage, setMainImage] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Fetch books from Firestore
-
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setBookDetails((prev) => ({
@@ -125,16 +126,50 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
           />
         </div>
         <div>
-          <label>Price:</label>
+        <label>SoftCover Available:</label>
+          <input
+            className="ml-1"
+            type="checkbox"
+            name="softCoverAvailable"
+            checked={softCoverAvailable}
+            onChange={() => setsoftCoverAvailable(!softCoverAvailable)}
+          />
+           {softCoverAvailable&& (
           <input
             className="w-full px-4 py-2 border border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
             type="number"
             name="price"
             value={bookDetails.price}
             onChange={handleInputChange}
+            placeholder="Price for SoftCover"
             required
           />
+           )}
         </div>
+
+        <div>
+          <label>HardCover Available:</label>
+          <input
+            className="ml-1"
+            type="checkbox"
+            name="hardCoverAvailable"
+            checked={hardCoverAvailable}
+            onChange={() => setHardCoverAvailable(!hardCoverAvailable)}
+            
+          />
+          {hardCoverAvailable&& (
+            <input
+              className="w-full px-4 py-2 border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700 mt-2"
+              type="number"
+              name="softcoverPrice"
+              value={bookDetails.hardPrice}
+              placeholder="Price for SoftCover"
+              onChange={handleInputChange}
+              required
+            />
+          )}
+        </div>
+
 
         <div>
           <label>Sequence (Order):</label>
@@ -152,7 +187,7 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         <div>
           <label>Is Active:</label>
           <input
-            className="ml-5 "
+            className="ml-1 "
             type="checkbox"
             name="isActive"
             checked={bookDetails.isActive}
@@ -163,7 +198,7 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         <div>
           <label>Is Visible Home:</label>
           <input
-            className="ml-5"
+            className="ml-1"
             type="checkbox"
             name="isVisibleHome"
             checked={bookDetails.isVisibleHome}
