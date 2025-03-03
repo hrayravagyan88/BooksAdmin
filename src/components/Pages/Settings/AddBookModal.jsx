@@ -9,8 +9,8 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         title: "",
         description1: "",
         description2: "",
-        hardPrice:"",
-        price: "",
+        hardPrice:0,
+        price: 0,
         isActive:false,
         isVisibleHome:true,
         sequence:''
