@@ -102,7 +102,10 @@ const BooksList = () => {
                 <td className="border border-gray-300 p-2">{book.title}</td>
                 <td className="border border-gray-300 p-2">{book.description1}</td>
                 <td className="border border-gray-300 p-2">{book.description2}</td>
-                <td className="border border-gray-300 p-2">֏{book.price}</td>
+                <td className="border border-gray-300 p-2 min-w-[135px]">
+                  {book.price}֏-soft<br/>
+                  {book.hardPrice|| 0}֏-hard<br/>
+                </td>
                 <td className="border border-gray-300 p-2">
                   <img
                     src={book.mainImage}

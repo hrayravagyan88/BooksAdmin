@@ -16,8 +16,6 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         sequence:''
 
       });
-  const [softCoverAvailable,setsoftCoverAvailable]= useState(false)
-  const [hardCoverAvailable,setHardCoverAvailable]= useState(false)
   const [imageFiles, setImageFiles] = useState([]);
   const [mainImage, setMainImage] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -126,15 +124,7 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
           />
         </div>
         <div>
-        <label>SoftCover Available:</label>
-          <input
-            className="ml-1"
-            type="checkbox"
-            name="softCoverAvailable"
-            checked={softCoverAvailable}
-            onChange={() => setsoftCoverAvailable(!softCoverAvailable)}
-          />
-           {softCoverAvailable&& (
+        <label>Price:</label>
           <input
             className="w-full px-4 py-2 border border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
             type="number"
@@ -144,30 +134,19 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
             placeholder="Price for SoftCover"
             required
           />
-           )}
         </div>
 
         <div>
-          <label>HardCover Available:</label>
-          <input
-            className="ml-1"
-            type="checkbox"
-            name="hardCoverAvailable"
-            checked={hardCoverAvailable}
-            onChange={() => setHardCoverAvailable(!hardCoverAvailable)}
-            
-          />
-          {hardCoverAvailable&& (
+          <label>HardCover Price:</label>
             <input
               className="w-full px-4 py-2 border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700 mt-2"
               type="number"
-              name="softcoverPrice"
+              name="hardPrice"
               value={bookDetails.hardPrice}
-              placeholder="Price for SoftCover"
+              placeholder="Price for HardCover"
               onChange={handleInputChange}
               required
-            />
-          )}
+            />        
         </div>
 
 

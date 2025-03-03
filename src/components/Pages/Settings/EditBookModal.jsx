@@ -12,6 +12,7 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
         price: "",
         isActive:false,
         isVisibleHome:true,
+        hardPrice:"",
         sequence:''
 
       });
@@ -39,7 +40,7 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
                 isVisibleHome: data.isVisibleHome ||false,
                 price: data.price || "",
                 sequence: data.sequence || "",
-
+                hardPrice:data.hardPrice || "",
               });
             }
           } catch (error) {
@@ -159,6 +160,18 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
                 type="number"
                 name="price"
                 value={bookDetails.price}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div>
+              <label>HardCover Price :</label>
+              <input
+                className="w-full px-4 py-2 border border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
+                type="number"
+                name="hardPrice"
+                value={bookDetails.hardPrice}
                 onChange={handleInputChange}
                 required
               />
