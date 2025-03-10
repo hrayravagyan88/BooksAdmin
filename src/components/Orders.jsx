@@ -160,11 +160,17 @@ const Profile = () => {
   );
 
   const handleStatusToggle = (status) => {
-    setSelectedStatuses((prev) =>
-      prev.includes(status)
-        ? prev.filter((s) => s !== status) // Remove from filter
-        : [...prev, status] // Add to filter
-    );
+    setSelectedStatuses((prev) => {
+      if (status === "Done") {
+        // If clicking on "Archived", clear all filters and select only "Archived"
+        return prev.includes(status) ? [] : ["Done"];
+      } else {
+        // Normal toggle behavior for other statuses
+        return prev.includes(status)
+          ? prev.filter((s) => s !== status) // Remove from filter
+          : [...prev.filter((s) => s !== "Done"), status]; // Add new status and remove "Done" if exists
+      }
+    });
   };
   return (
     <div className="pl-10 container mx-auto p-4 pl-0">
@@ -203,7 +209,7 @@ const Profile = () => {
               {statusOptions.map((status) => (
                 <Chip
                   key={status}
-                  label={status}
+                  label={status === "Done" ? "Archived" : status}
                   onClick={() => handleStatusToggle(status)}
                   variant={selectedStatuses.includes(status) ? "filled" : "outlined"}
                   color="primary"
@@ -268,7 +274,15 @@ const Profile = () => {
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}</td>
 
-                        <td className="border border-gray-300 text-center">{item.status || "N/A"}</td>
+                        <td className="border border-gray-300 text-center">
+                          {item.status === "New" ? (
+                            <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
+                              New
+                            </span>
+                          ) : (
+                            item.status || "N/A"
+                          )}
+                        </td>
                         <td className="border border-gray-300 text-center">{item.paystatus || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.phone || "N/A"}</td>
                         <td className="border border-gray-300 text-center">
