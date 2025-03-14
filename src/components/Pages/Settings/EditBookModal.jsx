@@ -56,8 +56,12 @@ export const EditBookModal = ({ BookId, clodeEditModal, handleNewOrder }) => {
       const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        if (bookDetails.hardPrice <= 0 && bookDetails.price <= 0) {
+          alert("One Of the Prices must be not equal to 0");
+          setLoading(false);
+          return;
+      }
         try {
-
         const storage = getStorage();
         const filePath =`books/${BookId}/mainImage`;
         let url;

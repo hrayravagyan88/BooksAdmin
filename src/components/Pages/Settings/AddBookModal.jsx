@@ -54,7 +54,11 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
     const uniqueId = uuidv4();
     e.preventDefault();
     setLoading(true);
-
+    if (bookDetails.hardPrice <= 0 && bookDetails.price <= 0) {
+      alert("One Of the Prices must be not equal to 0");
+      setLoading(false);
+      return;
+  }
     try {
         let imageUrls = [];
         const mainImageRef = ref(storage, `books/${mainImage.name}`);
