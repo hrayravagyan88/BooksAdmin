@@ -104,11 +104,12 @@ const Profile = () => {
   }
 
   const handleFilterByDocId = () => {
-    if (!searchDocId.trim()) {
+    const trimmedSearch = searchDocId.trim();
+    if (!trimmedSearch) {
       setFilteredData(data); // If input is empty, show all data
     } else {
-      const filteredOrders = data.filter(
-        (order) => order.collectionId === searchDocId.trim() // Match the input with the Firestore doc id
+      const filteredOrders = data.filter((order) =>
+        order.collectionId.includes(trimmedSearch)// Match the input with the Firestore doc id
       );
       setFilteredData(filteredOrders);
     }
