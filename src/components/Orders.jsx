@@ -275,16 +275,21 @@ const Profile = () => {
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}</td>
 
-                        <td className="border border-gray-300 text-center">
+                        <td className="border border-gray-300 text-center" style = {{minWidth:'110px'}}>
                           {item.status === "New" ? (
-                            <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
+                            <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{backgroundColor:'#6bff33'}}>
                               New
                             </span>
                           ) : item.status === "Done" ? (
-                            <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs font-semibold">
+                            <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                              backgroundColor: "#05602f"}}>
                               Archived
                             </span>) : (
-                            item.status || "N/A"
+                              
+                              <span className="text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                                backgroundColor: "#3374ff",}}>
+                                {item.status}
+                              </span> ||"N/A"
                           )}
                         </td>
                         <td className="border border-gray-300 text-center">{item.paystatus || "N/A"}</td>
