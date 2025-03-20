@@ -280,7 +280,10 @@ const Profile = () => {
                             <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
                               New
                             </span>
-                          ) : (
+                          ) : item.status === "Done" ? (
+                            <span className="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs font-semibold">
+                              Archived
+                            </span>) : (
                             item.status || "N/A"
                           )}
                         </td>
