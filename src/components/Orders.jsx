@@ -248,6 +248,7 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
                 <th className="border border-gray-300 px-4 py-2">Name</th>
                 <th className="border border-gray-300 px-4 py-2">Customer Name</th>
+                <th className="border border-gray-300 px-4 py-2">Granny Name</th>
                 <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Payment Status</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
@@ -275,6 +276,7 @@ const Profile = () => {
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
+                        <td className="border border-gray-300 text-center">{item.granny_name || "N/A"}</td>
                         <td className="border border-gray-300 text-center" style = {{minWidth:'110px'}}>
                           {item.status === "New" ? (
                             <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{backgroundColor:'#6bff33'}}>
