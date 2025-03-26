@@ -17,6 +17,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     mail: "",
     note:"",
     status:statuses[0]|| "",
+    cName:'',
     paystatus:paymentStatuses[0]|| "",
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]);
@@ -99,19 +100,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
       <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6">
         <h2 className="text-xl font-bold mb-1">Add New Order</h2>
         <form onSubmit={handleSubmit}>
-          {/* Address */}
-          <div className="mb-1">
-            <label className="block text-sm font-medium mb-1">Address</label>
-            <input
-              type="text"
-              name="address"
-              value={orderData.address}
-              onChange={handleInputChange}
-              className="w-full border rounded px-3 py-1"
-              required
-            />
-          </div>
-    
+          
           {/* Full Name */}
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Full Name</label>
@@ -119,6 +108,17 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
               type="text"
               name="fullName"
               value={orderData.fullName}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            />
+          </div>
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Customer Name</label>
+            <input
+              type="text"
+              name="cName"
+              value={orderData.cName}
               onChange={handleInputChange}
               className="w-full border rounded px-3 py-1"
               required
@@ -261,6 +261,18 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
                 </option>
               ))}
             </select>
+          </div>
+          {/* Address */}
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Address</label>
+            <input
+              type="text"
+              name="address"
+              value={orderData.address}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            />
           </div>
 
           {/* Image upload */}

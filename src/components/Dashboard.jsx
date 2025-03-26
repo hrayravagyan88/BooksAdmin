@@ -3,17 +3,15 @@ import React, { useState } from "react";
 import ProtectedRoute from "./ProtectedRoute";
 import LeftSideBar from "./LeftSideBar";
 
-import Home from "./Home";
+
 import Orders from "./Orders"
 import ContactUs from "./ContactUs";
 //import BooksList from "./Pages/Settings/BooksList";
 import BooksList from "./Pages/Settings/BookList";
 const Dashboard = () => {
-  const [currentView, setCurrentView] = useState("Home");
+  const [currentView, setCurrentView] = useState("Orders");
   const renderView = () => {
     switch (currentView) {
-      case "Home":
-        return <Home />;
       case "Orders":
         return <Orders />;
       case "ContactUs":

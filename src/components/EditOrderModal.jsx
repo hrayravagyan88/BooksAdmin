@@ -17,7 +17,8 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
     note: "",
     status: '',
     phone: "",
-    paystatus:""
+    paystatus:"",
+    cName:''
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան", "Սևան", "Հրազդան", "Չարենցավան", "Արարատ", "Վաղարշապատ", "Գորիս", "Աշտարակ", "Սիսիան"]);
   const [statuses]=  useState(["New", "In Painting","In Printing", "Done"]);
@@ -51,6 +52,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
             phone: data.phone || "",
             status: data.status || statuses[0],
             paystatus:data.paystatus ||paymentStatuses[0],
+            cName:data.cName|| '',
           });
         }
         const bookRef = collection(db, "books");
@@ -126,19 +128,6 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
       <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6">
         <h2 className="text-xl font-bold mb-1">Edit an Order</h2>
         <form onSubmit={handleSubmit}>
-          {/* Address */}
-          <div className="mb-1">
-            <label className="block text-sm font-medium mb-1">Address</label>
-            <input
-              type="text"
-              name="address"
-              value={orderData.address}
-              onChange={handleInputChange}
-              className="w-full border rounded px-3 py-1"
-              required
-            />
-          </div>
-
           {/* Full Name */}
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Full Name</label>
@@ -146,6 +135,19 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
               type="text"
               name="fullName"
               value={orderData.fullName}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            />
+          </div>
+
+
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Customer Name</label>
+            <input
+              type="text"
+              name="cName"
+              value={orderData.cName || ''}
               onChange={handleInputChange}
               className="w-full border rounded px-3 py-1"
               required
@@ -255,9 +257,6 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
             </select>
           </div>
 
-
-          {/* Delivery */}
-
           {/* Book Dropdown */}
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Select Book</label>
@@ -277,6 +276,18 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
                 </option>
               ))}
             </select>
+          </div>
+          {/* Address */}
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Address</label>
+            <input
+              type="text"
+              name="address"
+              value={orderData.address}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            />
           </div>
 
           <div className="flex gap-4">
