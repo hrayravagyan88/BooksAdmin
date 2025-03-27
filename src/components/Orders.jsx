@@ -242,13 +242,12 @@ const Profile = () => {
           <table className=" overflow-auto table-auto w-full border-collapse border border-gray-200">
             <thead className="bg-gray-100">
               <tr className="text-xs">
+                <th className="border border-gray-300 px-4 py-2">Customer Name</th>
                 <th className="border border-gray-300 px-4 py-2">BookName</th>
+                <th className="border border-gray-300 px-4 py-2">Name-Granny Name</th>
                 <th className="border border-gray-300 px-4 py-2">Address</th>
                 <th className="border border-gray-300 px-4 py-2">City</th>
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
-                <th className="border border-gray-300 px-4 py-2">Name</th>
-                <th className="border border-gray-300 px-4 py-2">Customer Name</th>
-                <th className="border border-gray-300 px-4 py-2">Granny Name</th>
                 <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Payment Status</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
@@ -269,14 +268,12 @@ const Profile = () => {
                       //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
                       const Images = Object.entries(item.Images)
                       return (<tr key={`${item.id}-${index}`} className="text-xs" >
+                        <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.bookTitle}</td>
+                        <td className="border border-gray-300 text-center">{item.fullName || "N/A"}-{item.granny_name || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.address}</td>
                         <td className="border border-gray-300 text-center">{item.city || "N/A"}</td>
-
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
-                        <td className="border border-gray-300 text-center">{item.fullName || "N/A"}</td>
-                        <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
-                        <td className="border border-gray-300 text-center">{item.granny_name || "N/A"}</td>
                         <td className="border border-gray-300 text-center" style = {{minWidth:'110px'}}>
                           {item.status === "New" ? (
                             <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{backgroundColor:'#6bff33'}}>
