@@ -11,6 +11,9 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         description2: "",
         hardPrice:0,
         price: 0,
+        pagesCount:0,
+        bookWidth:0,
+        bookHeight:0,
         isActive:false,
         isVisibleHome:true,
         sequence:''
@@ -166,7 +169,50 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
           />
         </div>
 
+        <div className="flex space-x-4">
+  {/* Pages Count Field */}
+  <div className="flex-1">
+    <label>Pages Count:</label>
+    <input
+      className="w-full px-4 py-2 border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
+      type="number"
+      name="pagesCount"
+      value={bookDetails.pagesCount}
+      onChange={handleInputChange}
+      placeholder="Enter pages count"
+      required
+    />
+  </div>
 
+  {/* Book Size (Width & Height) */}
+  <div className="flex-1 flex space-x-2">
+    <div className="flex-1">
+      <label>Width:</label>
+      <input
+        className="w-full px-4 py-2 border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
+        type="number"
+        name="bookWidth"
+        value={bookDetails.bookWidth}
+        onChange={handleInputChange}
+        placeholder="Width"
+        required
+      />
+    </div>
+    
+    <div className="flex-1">
+      <label>Height:</label>
+      <input
+        className="w-full px-4 py-2 border border-gray-700 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 text-gray-700"
+        type="number"
+        name="bookHeight"
+        value={bookDetails.bookHeight}
+        onChange={handleInputChange}
+        placeholder="Height"
+        required
+      />
+    </div>
+  </div>
+</div>
         <div>
           <label>Is Active:</label>
           <input
