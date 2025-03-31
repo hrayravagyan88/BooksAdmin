@@ -21,7 +21,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
     cName:''
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան", "Սևան", "Հրազդան", "Չարենցավան", "Արարատ", "Վաղարշապատ", "Գորիս", "Աշտարակ", "Սիսիան"]);
-  const [statuses]=  useState(["New", "In Painting","In Printing", "Done"]);
+  const [statuses]=  useState(["New", "In Painting","In Printing", "Delivered","Canceled/Rejected","Ready for Delivery","Delay"]);
   const [paymentStatuses]=  useState(["Not Paid", "Paid", "Partially Paid"]) 
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);

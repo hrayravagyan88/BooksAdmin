@@ -7,14 +7,14 @@ import { Chip } from "@mui/material";
 
 
 const Profile = () => {
-  const statusOptions = ["New", "In Painting", "In Printing", "Done"];
+  const statusOptions = ["New", "In Painting","In Printing", "Delivered","Canceled/Rejected","Ready for Delivery","Delay"];
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setshowEditModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState('')
   const [selectBook, setSelectBook] = useState('')
-  const [selectedStatuses, setSelectedStatuses] = useState(statusOptions.filter((status) => status !== "Done"))
+  const [selectedStatuses, setSelectedStatuses] = useState(statusOptions.filter((status) => status !== "Delivered"))
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [editingOrder, setEditingOrder] = useState(null);
@@ -152,7 +152,7 @@ const Profile = () => {
   };
 
   const handleResetFilters = () => {
-    setSelectedStatuses(statusOptions.filter((status) => status !== "Done"));
+    setSelectedStatuses(statusOptions.filter((status) => status !== "Delivered"));
   };
 
   // Apply filter to orders
@@ -162,14 +162,14 @@ const Profile = () => {
 
   const handleStatusToggle = (status) => {
     setSelectedStatuses((prev) => {
-      if (status === "Done") {
+      if (status === "Delivered") {
         // If clicking on "Archived", clear all filters and select only "Archived"
-        return prev.includes(status) ? [] : ["Done"];
+        return prev.includes(status) ? [] : ["Delivered"];
       } else {
         // Normal toggle behavior for other statuses
         return prev.includes(status)
           ? prev.filter((s) => s !== status) // Remove from filter
-          : [...prev.filter((s) => s !== "Done"), status]; // Add new status and remove "Done" if exists
+          : [...prev.filter((s) => s !== "Delivered"), status]; // Add new status and remove "Done" if exists
       }
     });
   };
@@ -210,7 +210,7 @@ const Profile = () => {
               {statusOptions.map((status) => (
                 <Chip
                   key={status}
-                  label={status === "Done" ? "Archived" : status}
+                  label={status === "Delivered" ? "Archived" : status}
                   onClick={() => handleStatusToggle(status)}
                   variant={selectedStatuses.includes(status) ? "filled" : "outlined"}
                   color="primary"
@@ -236,7 +236,7 @@ const Profile = () => {
           <AddOrderModal handleNewOrder={handleNewOrder} closeModal={handleCloseModal} />
         )}
 
-        {filteredData.filter(item => item.status !== "Done").length === 0 ? (
+        {filteredData.filter(item => item.status !== "Delivered").length === 0 ? (
           <div>No data available</div>
         ) : (
           <table className=" overflow-auto table-auto w-full border-collapse border border-gray-200">
@@ -279,12 +279,26 @@ const Profile = () => {
                             <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{backgroundColor:'#6bff33'}}>
                               New
                             </span>
-                          ) : item.status === "Done" ? (
+                          ) : item.status === "Delivered" ? (
                             <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
                               backgroundColor: "#05602f"}}>
-                              Archived
-                            </span>) : (
-                              
+                              Delivered
+                            </span>):
+                             item.status === "Ready for Delivery" ? (
+                              <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                                backgroundColor: "#04b53f"}}>
+                                Ready for Delivery
+                              </span>):
+                              item.status === "Delay" ? (
+                                <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                                  backgroundColor: "#e79116"}}>
+                                  Delay
+                                </span>):
+                            item.status === "Canceled/Rejected" ? (
+                              <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                                backgroundColor: "#d70d0d"}}>
+                               Canceled/Rejected
+                              </span>): (
                               <span className="text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
                                 backgroundColor: "#3374ff",}}>
                                 {item.status}

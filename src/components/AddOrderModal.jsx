@@ -5,7 +5,7 @@ import { db, storage } from "../../firebase"; // Your Firebase config file
 import { v4 as uuidv4 } from 'uuid';
 
 const AddOrderModal = ({ closeModal,handleNewOrder}) => {
-  const [statuses]=  useState(["New", "In Painting","In Printing", "Done"])
+  const [statuses]=  useState(["New", "In Painting","In Printing", "Delivered","Canceled/Rejected","Ready for Delivery","Delay"])
   const [paymentStatuses]=  useState(["Not Paid", "Paid", "Partially Paid"]) 
   const [orderData, setOrderData] = useState({
     address: "",
