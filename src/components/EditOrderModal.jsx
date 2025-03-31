@@ -26,6 +26,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedBook,setselectedBook]= useState({})
 
   // Fetch books from Firestore
   useEffect(() => {
@@ -65,6 +66,16 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
       } catch (error) {
         console.error("Error fetching books:", error);
       }
+     /* if (book) {
+                const bookDocRef = doc(db, "books", book);
+                const bookDocSnap = await getDoc(bookDocRef);
+                if (bookDocSnap.exists()) {
+                  const bookData = bookDocSnap.data();
+                  setselectedBook(bookData)
+                } else {
+                  
+                }
+              }*/
     };
 
     fetchData();
