@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 const AddOrderModal = ({ closeModal,handleNewOrder}) => {
   const [statuses]=  useState(["New", "In Painting","In Printing", "Delivered","Canceled/Rejected","Ready for Delivery","Delay"])
   const [paymentStatuses]=  useState(["Not Paid", "Paid", "Partially Paid"]) 
+  const [coverOptions,setcoverOptions] = useState(["Կոշտ կազմ","Փափուկ Կազմ"])
   const [orderData, setOrderData] = useState({
     address: "",
     city: "",
@@ -19,6 +20,8 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
     status:statuses[0]|| "",
     cName:'',
     paystatus:paymentStatuses[0]|| "",
+    price:'',
+    cover:coverOptions[0]|| "",
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան","Սևան","Հրազդան","Չարենցավան","Արարատ","Վաղարշապատ","Գորիս","Աշտարակ","Սիսիան"]);
  
@@ -96,8 +99,8 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 ">
+      <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6 max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-1">Add New Order</h2>
         <form onSubmit={handleSubmit}>
           
@@ -189,7 +192,7 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
               ))}
             </select>
           </div>
-
+          
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Order Status</label>
             <select
@@ -262,6 +265,38 @@ const AddOrderModal = ({ closeModal,handleNewOrder}) => {
               ))}
             </select>
           </div>
+
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Cover</label>
+            <select
+              name="cover"
+              value={orderData.cover || coverOptions[0]}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            >
+              <option value="" disabled>
+                Select a Cover
+              </option>
+              {coverOptions.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Price</label>
+            <input
+              type="input"
+              name="price"
+              value={orderData.price}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            />
+          </div>
+
           {/* Address */}
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Address</label>

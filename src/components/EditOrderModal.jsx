@@ -54,6 +54,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
             status: data.status || statuses[0],
             paystatus:data.paystatus ||paymentStatuses[0],
             cName:data.cName|| '',
+            price:data.price
           });
         }
         const bookRef = collection(db, "books");
@@ -136,7 +137,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6">
+      <div className="bg-white rounded-lg shadow-lg w-3/4 max-w-lg p-6 max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-1">Edit an Order</h2>
         <form onSubmit={handleSubmit}>
           {/* Full Name */}
@@ -228,7 +229,17 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
               ))}
             </select>
           </div>
-
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Price</label>
+            <input
+              name="price"
+              value={orderData.price}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            />
+          </div>
+          
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Status</label>
             <select
@@ -248,6 +259,9 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
               ))}
             </select>
           </div>
+
+    
+
           <div className="mb-1">
             <label className="block text-sm font-medium mb-1">Payment Status</label>
             <select
