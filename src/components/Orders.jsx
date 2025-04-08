@@ -7,7 +7,7 @@ import { Chip } from "@mui/material";
 
 
 const Profile = () => {
-  const statusOptions = ["New", "In Painting","In Printing", "Delivered","Canceled/Rejected","Ready for Delivery","Delay"];
+  const statusOptions = ["New", "In Painting", "In Printing", "Delivered", "Canceled/Rejected", "Ready for Delivery", "Delay"];
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -246,7 +246,7 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">BookName</th>
                 <th className="border border-gray-300 px-4 py-2">Name-Granny Name</th>
                 <th className="border border-gray-300 px-4 py-2">Address</th>
-               
+
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
                 <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Payment Status</th>
@@ -271,44 +271,62 @@ const Profile = () => {
                         <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.bookTitle}</td>
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}-{item.granny_name || "N/A"}</td>
-                        <td className="border border-gray-300 text-center">{item.city },{item.address}</td>
+                        <td className="border border-gray-300 text-center">{item.city},{item.address}</td>
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
-                        <td className="border border-gray-300 text-center" style = {{minWidth:'130px'}}>
+                        <td className="border border-gray-300 text-center" style={{ minWidth: '130px' }}>
                           {item.status === "New" ? (
-                            <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{backgroundColor:'#6bff33'}}>
+                            <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: '#6bff33' }}>
                               New
                             </span>
                           ) : item.status === "Delivered" ? (
                             <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
-                              backgroundColor: "#05602f"}}>
+                              backgroundColor: "#05602f"
+                            }}>
                               Delivered
-                            </span>):
-                             item.status === "Ready for Delivery" ? (
+                            </span>) :
+                            item.status === "Ready for Delivery" ? (
                               <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
-                                backgroundColor: "#05602f"}}>
+                                backgroundColor: "#05602f"
+                              }}>
                                 Ready for Delivery
-                              </span>):
+                              </span>) :
                               item.status === "Delay" ? (
                                 <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
-                                  backgroundColor: "#e79116"}}>
+                                  backgroundColor: "#e79116"
+                                }}>
                                   Delay
-                                </span>):
-                            item.status === "Canceled/Rejected" ? (
-                              <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
-                                backgroundColor: "#d70d0d"}}>
-                               Canceled/Rejected
-                              </span>): (
-                              <span className="text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
-                                backgroundColor: "#3374ff",}}>
-                                {item.status}
-                              </span> ||"N/A"
-                          )}
-                         
+                                </span>) :
+                                item.status === "Canceled/Rejected" ? (
+                                  <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                                    backgroundColor: "#d70d0d"
+                                  }}>
+                                    Canceled/Rejected
+                                  </span>) : (
+                                  <span className="text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
+                                    backgroundColor: "#3374ff",
+                                  }}>
+                                    {item.status}
+                                  </span> || "N/A"
+                                )}
+
                         </td>
                         <td className="border border-gray-300 text-center">
-                        <div>{item.paystatus || "N/A"}</div>
-                        <div>Price: {item.price || "N/A"}</div>
-                          </td>
+                          <div style={{
+                            backgroundColor:
+                              item.paystatus === "Not Paid"
+                                ? "#a50404"
+                                : item.paystatus === "Paid"
+                                  ? "#05602f"
+                                  : item.paystatus === "Partially Paid"
+                                    ? "#df6f17"
+                                    : "transparent",
+                            color: "#fff",
+                            padding: "4px 8px",
+                            borderRadius: "4px",
+                            display: "inline-block",
+                          }}>{item.paystatus || "N/A"}</div>
+                          <div>Price: {item.price || "N/A"}</div>
+                        </td>
                         <td className="border border-gray-300 text-center">{item.phone || "N/A"}</td>
                         <td className="border border-gray-300 text-center">
                           {item.date
