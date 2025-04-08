@@ -7,7 +7,7 @@ import { Chip } from "@mui/material";
 
 
 const Profile = () => {
-  const statusOptions = ["New", "In Painting", "In Printing", "Delivered", "Canceled/Rejected", "Ready for Delivery", "Delay"];
+  const statusOptions = ["New","In Progress","In Painting", "In Printing", "Delivered", "Canceled/Rejected", "Ready for Delivery", "Delay"];
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -206,7 +206,7 @@ const Profile = () => {
             </button>
           </div>
           <div className="flex-1">
-            <div className="text-right flex gap-1 justify-end">
+            <div className="text-right flex justify-end">
               {statusOptions.map((status) => (
                 <Chip
                   key={status}
