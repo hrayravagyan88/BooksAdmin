@@ -273,7 +273,7 @@ const Profile = () => {
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}-{item.granny_name || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.city },{item.address}</td>
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
-                        <td className="border border-gray-300 text-center" style = {{minWidth:'110px'}}>
+                        <td className="border border-gray-300 text-center" style = {{minWidth:'130px'}}>
                           {item.status === "New" ? (
                             <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{backgroundColor:'#6bff33'}}>
                               New
@@ -285,7 +285,7 @@ const Profile = () => {
                             </span>):
                              item.status === "Ready for Delivery" ? (
                               <span className=" text-white px-2 py-1 rounded-full text-xs font-semibold" style={{
-                                backgroundColor: "#04b53f"}}>
+                                backgroundColor: "#05602f"}}>
                                 Ready for Delivery
                               </span>):
                               item.status === "Delay" ? (
