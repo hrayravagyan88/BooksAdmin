@@ -246,7 +246,7 @@ const Profile = () => {
                 <th className="border border-gray-300 px-4 py-2">BookName</th>
                 <th className="border border-gray-300 px-4 py-2">Name-Granny Name</th>
                 <th className="border border-gray-300 px-4 py-2">Address</th>
-                <th className="border border-gray-300 px-4 py-2">City</th>
+               
                 <th className="border border-gray-300 px-4 py-2">Mail</th>
                 <th className="border border-gray-300 px-4 py-2">Status</th>
                 <th className="border border-gray-300 px-4 py-2">Payment Status</th>
@@ -271,8 +271,7 @@ const Profile = () => {
                         <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.bookTitle}</td>
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}-{item.granny_name || "N/A"}</td>
-                        <td className="border border-gray-300 text-center">{item.address}</td>
-                        <td className="border border-gray-300 text-center">{item.city || "N/A"}</td>
+                        <td className="border border-gray-300 text-center">{item.city },{item.address}</td>
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>
                         <td className="border border-gray-300 text-center" style = {{minWidth:'110px'}}>
                           {item.status === "New" ? (
