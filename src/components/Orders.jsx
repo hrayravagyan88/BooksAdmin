@@ -57,6 +57,14 @@ const Profile = () => {
           updatedOrders.push({ ...orderData, bookTitle: "No Book Assigned" });
         }
       }
+
+
+      updatedOrders.sort((a, b) => {
+        if (a.status === "New" && b.status !== "New") return -1;
+        if (a.status !== "New" && b.status === "New") return 1;
+        return 0;
+      });
+      
       setData(updatedOrders);
       setFilteredData(updatedOrders);
     } catch (error) {
