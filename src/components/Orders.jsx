@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
-import { collection, doc, getDoc, getDocs, deleteDoc, query, orderBy } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, deleteDoc, query, orderBy ,updateDoc} from "firebase/firestore";
 import AddOrderModal from "./AddOrderModal";
 import EditOrderModal from "./EditOrderModal"
 import { Chip } from "@mui/material";
@@ -40,7 +40,8 @@ const Profile = () => {
           ...doc.data(),
           date: docData.createdDate ? docData.createdDate.toDate() : null,
         }
-      });
+      })
+      .filter((doc) => !doc.isDeleted);
       for (const orderDoc of MyNewSnapshot) {
         const orderData = orderDoc
         const bookId = orderData.doc_id;
@@ -64,7 +65,7 @@ const Profile = () => {
         if (a.status !== "New" && b.status === "New") return 1;
         return 0;
       });
-      
+
       setData(updatedOrders);
       setFilteredData(updatedOrders);
     } catch (error) {
@@ -85,15 +86,26 @@ const Profile = () => {
   const handleCancel = () => {
     setEditingOrder(null); // Reset editing
   };
+
   const handleDelete = async (orderId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
+    const confirmDelete = window.confirm("Are you sure you want to delete this order?");
+    if (!confirmDelete) return;
+  try {
+    const orderRef = doc(db, "Order", orderId);
+    await updateDoc(orderRef, {
+      isDeleted: true,
+    });
+    // Optionally: update local state to reflect the change immediately
+    setData((prevData) =>
+      prevData.filter((order) => order.collectionId !== orderId)
     );
-    if (confirmDelete) {
-      await deleteDoc(doc(db, "Order", orderId));
-      fetchData();
-    }
-  };
+    setFilteredData((prevData) =>
+      prevData.filter((order) => order.collectionId !== orderId)
+    );
+  } catch (error) {
+    console.error("Error deleting order:", error);
+  }
+};
 
   if (loading) {
     return <div>Loading...</div>;
