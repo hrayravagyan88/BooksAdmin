@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs ,deleteDoc,doc} from "firebase/firestore";
+import { collection, getDocs ,deleteDoc,doc,updateDoc} from "firebase/firestore";
 import { db } from "../../../../firebase"; // Import your firebase configuration
 import AddBookModal from './AddBookModal';
 import { EditBookModal } from "./EditBookModal";
@@ -20,7 +20,8 @@ const BooksList = () => {
       const booksData = booksSnapshot.docs.map((doc) => ({
         collectionId: doc.id, // Document ID
         ...doc.data(), // Document Data
-      }));
+      }))
+      .filter((doc) => !doc.isDeleted);;
       setBooks(booksData);
     } catch (error) {
       console.error("Error fetching books:", error);
@@ -35,14 +36,19 @@ const BooksList = () => {
   }, []);
 
   const handleDelete = async (orderId) => {
-    console.log(orderId)
-
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this user?"
       
     );
     if (confirmDelete) {
-      await deleteDoc(doc(db, "books", orderId));
+       try {
+         const orderRef = doc(db, "books", orderId);
+         await updateDoc(orderRef, {
+          isDeleted: true,
+         });
+       } catch (error) {
+         console.error("Error deleting order:", error);
+       }
       fetchBooks();
     }
 
