@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
-import { collection, doc, getDoc, getDocs, deleteDoc, query, orderBy ,updateDoc} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, deleteDoc, query, orderBy, updateDoc } from "firebase/firestore";
 import AddOrderModal from "./AddOrderModal";
 import EditOrderModal from "./EditOrderModal"
 import { Chip } from "@mui/material";
 
 
 const Profile = () => {
-  const statusOptions = ["New","In Progress","In Painting", "In Printing", "Delivered", "Canceled/Rejected", "Ready for Delivery", "Delay"];
+  const statusOptions = ["New", "In Progress", "In Painting", "In Printing", "Delivered", "Canceled/Rejected", "Ready for Delivery", "Delay"];
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -41,7 +41,7 @@ const Profile = () => {
           date: docData.createdDate ? docData.createdDate.toDate() : null,
         }
       })
-      .filter((doc) => !doc.isDeleted);
+        .filter((doc) => !doc.isDeleted);
       for (const orderDoc of MyNewSnapshot) {
         const orderData = orderDoc
         const bookId = orderData.doc_id;
@@ -90,22 +90,22 @@ const Profile = () => {
   const handleDelete = async (orderId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this order?");
     if (!confirmDelete) return;
-  try {
-    const orderRef = doc(db, "Order", orderId);
-    await updateDoc(orderRef, {
-      isDeleted: true,
-    });
-    // Optionally: update local state to reflect the change immediately
-    setData((prevData) =>
-      prevData.filter((order) => order.collectionId !== orderId)
-    );
-    setFilteredData((prevData) =>
-      prevData.filter((order) => order.collectionId !== orderId)
-    );
-  } catch (error) {
-    console.error("Error deleting order:", error);
-  }
-};
+    try {
+      const orderRef = doc(db, "Order", orderId);
+      await updateDoc(orderRef, {
+        isDeleted: true,
+      });
+      // Optionally: update local state to reflect the change immediately
+      setData((prevData) =>
+        prevData.filter((order) => order.collectionId !== orderId)
+      );
+      setFilteredData((prevData) =>
+        prevData.filter((order) => order.collectionId !== orderId)
+      );
+    } catch (error) {
+      console.error("Error deleting order:", error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -289,7 +289,14 @@ const Profile = () => {
                       const Images = Object.entries(item.Images)
                       return (<tr key={`${item.id}-${index}`} className="text-xs" >
                         <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
-                        <td className="border border-gray-300 text-center">{item.bookTitle}</td>
+                        <td className="border border-gray-300 text-center">  {item.bookTitle}
+                          {item.cover && (
+                            <>
+                              <br />
+                              ({item.cover})
+                            </>
+                          )}
+                          {!item.cover && ' (N/A)'}</td>
                         <td className="border border-gray-300 text-center">{item.fullName || "N/A"}-{item.granny_name || "N/A"}</td>
                         <td className="border border-gray-300 text-center">{item.city},{item.address}</td>
                         <td className="border border-gray-300 text-center">{item.mail || "N/A"}</td>

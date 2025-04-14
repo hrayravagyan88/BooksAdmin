@@ -18,11 +18,13 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
     status: '',
     phone: "",
     paystatus:"",
-    cName:''
+    cName:'',
+    cover:''
   });
   const [cities] = useState(["Երևան", "Գյումրի", "Կապան", "Վանաձոր", "Աբովյան", "Սևան", "Հրազդան", "Չարենցավան", "Արարատ", "Վաղարշապատ", "Գորիս", "Աշտարակ", "Սիսիան"]);
   const [statuses]=  useState(["New","In Progress","In Painting","In Printing", "Delivered","Canceled/Rejected","Ready for Delivery","Delay"]);
   const [paymentStatuses]=  useState(["Not Paid", "Paid", "Partially Paid"]) 
+  const [coverOptions,setcoverOptions] = useState(["Կոշտ կազմ","Փափուկ Կազմ"])
   const [books, setBooks] = useState([]); // Books dropdown
   const [imageFiles, setImageFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -53,6 +55,7 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
             phone: data.phone || "",
             status: data.status || statuses[0],
             paystatus:data.paystatus ||paymentStatuses[0],
+            cover:data.cover|| coverOptions[0],
             cName:data.cName|| '',
             price:data.price
           });
@@ -298,6 +301,26 @@ const EditOrderModal = ({ orderId, book, clodeEditModal, handleNewOrder }) => {
               {books.map((book) => (
                 <option key={book.id} value={book.id}>
                   {book.title}
+                </option>
+              ))}
+            </select>
+          </div>
+              {/*cover */}
+          <div className="mb-1">
+            <label className="block text-sm font-medium mb-1">Select Cover</label>
+            <select
+              name="cover"
+              value={orderData.cover}
+              onChange={handleInputChange}
+              className="w-full border rounded px-3 py-1"
+              required
+            >
+              <option value="" disabled>
+                Choose a Cover
+              </option>
+              {coverOptions.map((status) => (
+                <option key={status} value={status}>
+                  {status}
                 </option>
               ))}
             </select>
