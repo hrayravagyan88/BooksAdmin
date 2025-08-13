@@ -286,7 +286,7 @@ const Profile = () => {
                     // ✅ Filter out items with status "done"
                     .map((item, index) => {
                       //const mediaEntries = Object.entries(item.Images).filter(([key, value]) => key.startsWith('media'));
-                      const Images = Object.entries(item.Images)
+                      const Images = item?.Images ? Object.entries(item.Images) : [];
                       return (<tr key={`${item.id}-${index}`} className="text-xs" >
                         <td className="border border-gray-300 text-center">{item.cName || "N/A"}</td>
                         <td className="border border-gray-300 text-center">  {item.bookTitle}
