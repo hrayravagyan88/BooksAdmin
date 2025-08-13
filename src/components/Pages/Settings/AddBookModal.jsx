@@ -16,6 +16,7 @@ const AddBookModal = ({ closeModal,handleNewOrder}) => {
         bookHeight:0,
         isActive:false,
         isVisibleHome:true,
+        isDeleted:false,
         sequence:''
 
       });
